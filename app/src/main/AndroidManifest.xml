@@ -13,7 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -24,6 +24,16 @@
             <meta-data
                 android:name="android.nfc.action.TECH_DISCOVERED"
                 android:resource="@xml/tech_list"/>
+        </activity>
+        <activity android:name=".activity.TagInfoActivity">
+        </activity>
+        <activity android:name=".activity.DecodeActivity">
+        </activity>
+        <activity android:name=".activity.ListViewActivity">
+        </activity>
+        <activity android:name=".activity.ListContentViewActivity">
+        </activity>
+        <activity android:name=".activity.RandomPasswdActivity">
         </activity>
     </application>
 

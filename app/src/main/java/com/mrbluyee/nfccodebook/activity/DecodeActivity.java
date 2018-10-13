@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.mrbluyee.nfccodebook.R;
 import com.mrbluyee.nfccodebook.application.CodeBook;
@@ -71,10 +72,12 @@ public class DecodeActivity extends AppCompatActivity {
                         bundle.putSerializable("map",myMap);
                         intent.putExtra("bundle",bundle);
                         startActivity(intent);
+                    }else{
+                        Toast.makeText(DecodeActivity.this,"broken file!",Toast.LENGTH_SHORT).show();
                     }
                     break;
                 case 2: //解码错误
-
+                    Toast.makeText(DecodeActivity.this,"wrong password!",Toast.LENGTH_SHORT).show();
                     break;
             }
         }

@@ -10,7 +10,7 @@
         android:orientation="vertical">
 
         <ListView
-            android:id="@+id/list_view"
+            android:id="@+id/taginfo_list_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:divider="@color/colorPrimaryDark"
@@ -24,18 +24,12 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button_Add_Record"
+            android:id="@+id/button_Create_CodeBook"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Add record" />
+            android:text="Create CodeBook" />
 
-        <Button
-            android:id="@+id/button_Save_Record"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Save to Tag" />
     </LinearLayout>
 
 </LinearLayout>

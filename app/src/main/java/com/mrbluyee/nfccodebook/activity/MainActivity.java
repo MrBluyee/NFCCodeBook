@@ -59,17 +59,21 @@ public class MainActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             // TODO Auto-generated method stub
             super.handleMessage(msg);
+            Intent intent;
+            Bundle bundle;
             switch (msg.what) {
                 case 1: //是一张处理过的卡
-                    Intent intent = new Intent(MainActivity.this,DecodeActivity.class);
-                    Bundle bundle=new Bundle();
+                    intent = new Intent(MainActivity.this,DecodeActivity.class);
+                    bundle = new Bundle();
                     bundle.putByteArray("tagID",mTag.getId());
                     bundle.putByteArray("tagContent",(byte[]) msg.obj);
                     intent.putExtra("bundle",bundle);
                     startActivity(intent);
                     break;
                 case 2: //卡未处理过
-
+                    intent = new Intent(MainActivity.this,TagInfoActivity.class);
+                    intent.putExtra("mtag",mTag);
+                    startActivity(intent);
                     break;
             }
         }
