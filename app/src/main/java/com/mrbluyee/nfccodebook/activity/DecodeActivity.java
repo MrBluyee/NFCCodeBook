@@ -1,5 +1,6 @@
 package com.mrbluyee.nfccodebook.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,11 +14,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.mrbluyee.nfccodebook.R;
-import com.mrbluyee.nfccodebook.application.CodeBook;
+import com.mrbluyee.nfccodebook.bean.CodeBook;
 import com.mrbluyee.nfccodebook.application.ReadFromTagHandle;
 import com.mrbluyee.nfccodebook.utils.SerializableHashMap;
 
-public class DecodeActivity extends AppCompatActivity {
+public class DecodeActivity extends Activity {
     private byte[] tagContent = null;
     private byte[] tagID = null;
     private EditText editText_Decode_passwd;

@@ -1,5 +1,6 @@
 package com.mrbluyee.nfccodebook.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,9 +11,9 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.mrbluyee.nfccodebook.R;
-import com.mrbluyee.nfccodebook.application.CodeBook;
-import com.mrbluyee.nfccodebook.application.ListViewAdapter;
-import com.mrbluyee.nfccodebook.utils.CodeRecord;
+import com.mrbluyee.nfccodebook.bean.CodeBook;
+import com.mrbluyee.nfccodebook.adapter.ListViewAdapter;
+import com.mrbluyee.nfccodebook.bean.CodeRecord;
 import com.mrbluyee.nfccodebook.utils.SerializableHashMap;
 
 import java.io.Serializable;
@@ -22,7 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class ListViewActivity extends AppCompatActivity implements View.OnClickListener {
+public class ListViewActivity extends Activity implements View.OnClickListener {
     private ListView listView;
     private CodeBook codeBook;
     private List<String> recordList = new ArrayList<>();;
@@ -38,11 +39,11 @@ public class ListViewActivity extends AppCompatActivity implements View.OnClickL
         Bundle bundle = getIntent().getBundleExtra("bundle");
         if(bundle != null) {
             SerializableHashMap serializableHashMap = (SerializableHashMap) bundle.get("map");
-            this.codeBook = new CodeBook(serializableHashMap.getMap());
+            codeBook = new CodeBook(serializableHashMap.getMap());
             initData();
         }else{
             HashMap<String,CodeRecord> temp = new HashMap<String,CodeRecord>();
-            this.codeBook = new CodeBook(temp);
+            codeBook = new CodeBook(temp);
         }
     }
 

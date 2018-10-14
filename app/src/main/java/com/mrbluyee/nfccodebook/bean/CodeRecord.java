@@ -1,4 +1,4 @@
-package com.mrbluyee.nfccodebook.utils;
+package com.mrbluyee.nfccodebook.bean;
 
 public class CodeRecord {
     public String account = null;

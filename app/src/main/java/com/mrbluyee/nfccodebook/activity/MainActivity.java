@@ -1,25 +1,23 @@
 package com.mrbluyee.nfccodebook.activity;
 
+import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
-import android.nfc.tech.IsoDep;
-import android.nfc.tech.NfcA;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.provider.Settings;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
+
 import com.mrbluyee.nfccodebook.R;
 import com.mrbluyee.nfccodebook.application.ReadFromTagHandle;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
+    protected static final String activityTAG = MainActivity.class.getName();
     protected NfcAdapter mNfcAdapter = null;
     protected PendingIntent mPendingIntent = null;
     protected Tag mTag;
@@ -37,11 +35,12 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
         if (mNfcAdapter == null) {
-            Toast.makeText(this,"NFC not supported", Toast.LENGTH_SHORT);
+            Toast.makeText(this,"NFC not supported", Toast.LENGTH_SHORT).show();
             finish();
             return;
         } else {
             if (!mNfcAdapter.isEnabled()) {
+                Toast.makeText(MainActivity.this,"please turn on the NFC",Toast.LENGTH_SHORT).show();
                 Intent setNfc = new Intent(Settings.ACTION_NFC_SETTINGS);
                 startActivity(setNfc);
             }
@@ -61,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
             super.handleMessage(msg);
             Intent intent;
             Bundle bundle;
+            Log.i(activityTAG , "handler return");
             switch (msg.what) {
                 case 1: //是一张处理过的卡
                     intent = new Intent(MainActivity.this,DecodeActivity.class);
@@ -83,7 +83,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         mTag=intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+        Toast.makeText(MainActivity.this,"Tag detected",Toast.LENGTH_SHORT).show();
         if(mTag != null) { //handle
+            Log.i(activityTAG , "start ReadFromTagHandle");
             new ReadFromTagHandle(myHandler).new FirstCheck(mTag).begin();
         }
     }

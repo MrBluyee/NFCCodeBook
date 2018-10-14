@@ -1,11 +1,8 @@
-package com.mrbluyee.nfccodebook.application;
+package com.mrbluyee.nfccodebook.bean;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import com.mrbluyee.nfccodebook.utils.CodeRecord;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;

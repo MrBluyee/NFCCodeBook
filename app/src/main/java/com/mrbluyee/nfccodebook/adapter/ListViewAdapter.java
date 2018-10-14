@@ -1,4 +1,4 @@
-package com.mrbluyee.nfccodebook.application;
+package com.mrbluyee.nfccodebook.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
