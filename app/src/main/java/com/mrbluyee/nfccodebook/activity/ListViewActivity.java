@@ -69,6 +69,11 @@ public class ListViewActivity extends Activity implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ListViewActivity.this,ListContentViewActivity.class);
+                SerializableHashMap myMap = new SerializableHashMap();
+                myMap.setMap(codeBook.book);
+                Bundle bundle=new Bundle();
+                bundle.putSerializable("map",myMap);
+                intent.putExtra("bundle",bundle);
                 startActivityForResult(intent,1);
             }
         });

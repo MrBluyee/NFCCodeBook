@@ -19,6 +19,19 @@ public class ClipboardUtils {
     }
 
     public void clearClip() {
-        clipboardManager.setPrimaryClip(null);
+        ClipData clipData = ClipData.newPlainText(null, "");
+        clipboardManager.setPrimaryClip(clipData);
+    }
+
+    public String getTextFromClip(){
+        String temp = null;
+        if(clipboardManager.hasPrimaryClip()){
+            ClipData clipData = clipboardManager.getPrimaryClip();
+            if (clipData != null && clipData.getItemCount() > 0) {
+                CharSequence text = clipData.getItemAt(0).getText();
+                temp = text.toString();
+            }
+        }
+        return temp;
     }
 }

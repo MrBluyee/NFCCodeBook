@@ -16,6 +16,7 @@ import com.mrbluyee.nfccodebook.R;
 import com.mrbluyee.nfccodebook.bean.CodeBook;
 import com.mrbluyee.nfccodebook.bean.CodeRecord;
 import com.mrbluyee.nfccodebook.utils.ClipboardUtils;
+import com.mrbluyee.nfccodebook.utils.NotificationUtils;
 import com.mrbluyee.nfccodebook.utils.SerializableHashMap;
 
 import java.util.HashMap;
@@ -31,6 +32,7 @@ public class ListContentViewActivity extends Activity implements View.OnClickLis
     private EditText editText_Password;
     private EditText editText_Remark;
     private ClipboardUtils clipboardUtils;
+    private NotificationUtils notificationUtils;
 
     private ImageButton button_View_Record;
     private ImageButton button_Clipboard_Record;
@@ -49,6 +51,7 @@ public class ListContentViewActivity extends Activity implements View.OnClickLis
     private ImageButton button_Notification_Remark;
     private ImageButton button_Edit_Remark;
     private ImageButton button_Record_ShowAll;
+    private ImageButton button_Record_Random;
     private ImageButton button_Record_Delete;
     private ImageButton button_Record_Save;
 
@@ -83,23 +86,18 @@ public class ListContentViewActivity extends Activity implements View.OnClickLis
         setContentView(R.layout.list_content_view);
         initView();
         clipboardUtils = new ClipboardUtils(this);
+        notificationUtils = new NotificationUtils(this);
         Bundle bundle = getIntent().getBundleExtra("bundle");
-        if(bundle != null) {
-            SerializableHashMap serializableHashMap = (SerializableHashMap) bundle.get("map");
-            codeBook = new CodeBook(serializableHashMap.getMap());
-            recordName = bundle.getString("record");
-            codeRecord = codeBook.book.get(this.recordName);
+        SerializableHashMap serializableHashMap = (SerializableHashMap) bundle.get("map");
+        codeBook = new CodeBook(serializableHashMap.getMap());
+        recordName = bundle.getString("record");
+        if(recordName != null) {
+            codeRecord = codeBook.book.get(recordName);
             editText_Record.setText(recordName);
             editText_Account.setText(codeRecord.account);
             editText_Password.setText(codeRecord.password);
             editText_Remark.setText(codeRecord.remark);
-            setEditTextEditable(editText_Record,false);
-            setEditTextEditable(editText_Account,false);
-            setEditTextEditable(editText_Password,false);
-            setEditTextEditable(editText_Remark,false);
         }else{
-            HashMap<String,CodeRecord> temp = new HashMap<String,CodeRecord>();
-            codeBook = new CodeBook(temp);
             button_View_Record_status = true;
             button_View_Account_status = true;
             button_View_Password_status = true;
@@ -110,6 +108,10 @@ public class ListContentViewActivity extends Activity implements View.OnClickLis
             button_Edit_Password_status = true;
             button_Edit_Remark_status = true;
         }
+        setEditTextEditable(editText_Record,false);
+        setEditTextEditable(editText_Account,false);
+        setEditTextEditable(editText_Password,false);
+        setEditTextEditable(editText_Remark,false);
     }
 
     private void setEditTextEditable(EditText editText, boolean value) {
@@ -144,6 +146,7 @@ public class ListContentViewActivity extends Activity implements View.OnClickLis
         button_Notification_Remark = (ImageButton)findViewById(R.id.button_Notification_Remark);
         button_Edit_Remark = (ImageButton)findViewById(R.id.button_Edit_Remark);
         button_Record_ShowAll = (ImageButton)findViewById(R.id.button_Record_ShowAll);
+        button_Record_Random = (ImageButton)findViewById(R.id.button_Record_Random);
         button_Record_Delete = (ImageButton)findViewById(R.id.button_Record_Delete);
         button_Record_Save = (ImageButton)findViewById(R.id.button_Record_Save);
         button_View_Record.setOnClickListener(this);
@@ -163,6 +166,7 @@ public class ListContentViewActivity extends Activity implements View.OnClickLis
         button_Notification_Remark.setOnClickListener(this);
         button_Edit_Remark.setOnClickListener(this);
         button_Record_ShowAll.setOnClickListener(this);
+        button_Record_Random.setOnClickListener(this);
         button_Record_Delete.setOnClickListener(this);
         button_Record_Save.setOnClickListener(this);
     }
@@ -177,7 +181,7 @@ public class ListContentViewActivity extends Activity implements View.OnClickLis
             bundle.putSerializable("map",myMap);
             intent.putExtra("bundle",bundle);
             setResult(2, intent);//数据更新
-        }else{
+        }else {
             setResult(3, intent);//数据未更新
         }
         super.onBackPressed();
@@ -256,7 +260,12 @@ public class ListContentViewActivity extends Activity implements View.OnClickLis
                 break;
             }
             case R.id.button_Notification_Record:{
-
+                button_Notification_Record_status = !button_Notification_Record_status;
+                if(button_Notification_Record_status){
+                    notificationUtils.notifiShowText(1,"Record name",str_Record_Temp);
+                }else{
+                    notificationUtils.notifiHide(1);
+                }
                 break;
             }
             case R.id.button_Edit_Record:{
@@ -289,7 +298,12 @@ public class ListContentViewActivity extends Activity implements View.OnClickLis
                 break;
             }
             case R.id.button_Notification_Account:{
-
+                button_Notification_Account_status = !button_Notification_Account_status;
+                if(button_Notification_Account_status){
+                    notificationUtils.notifiShowText(2,"Account",str_Account_Temp);
+                }else{
+                    notificationUtils.notifiHide(2);
+                }
                 break;
             }
             case R.id.button_Edit_Account:{
@@ -322,7 +336,12 @@ public class ListContentViewActivity extends Activity implements View.OnClickLis
                 break;
             }
             case R.id.button_Notification_Password:{
-
+                button_Notification_Password_status = !button_Notification_Password_status;
+                if(button_Notification_Password_status){
+                    notificationUtils.notifiShowText(3,"Password",str_Password_Temp);
+                }else{
+                    notificationUtils.notifiHide(3);
+                }
                 break;
             }
             case R.id.button_Edit_Password:{
@@ -355,7 +374,12 @@ public class ListContentViewActivity extends Activity implements View.OnClickLis
                 break;
             }
             case R.id.button_Notification_Remark:{
-
+                button_Notification_Remark_status = !button_Notification_Remark_status;
+                if(button_Notification_Remark_status){
+                    notificationUtils.notifiShowText(4,"Remark",str_Remark_Temp);
+                }else{
+                    notificationUtils.notifiHide(4);
+                }
                 break;
             }
             case R.id.button_Edit_Remark:{
@@ -380,6 +404,11 @@ public class ListContentViewActivity extends Activity implements View.OnClickLis
                     editText_Password.setText(hide_password);
                     editText_Remark.setText(hide_password);
                 }
+                break;
+            }
+            case R.id.button_Record_Random:{
+                Intent intent = new Intent(ListContentViewActivity.this,RandomPasswdActivity.class);
+                startActivity(intent);
                 break;
             }
             case R.id.button_Record_Delete:{
@@ -409,7 +438,11 @@ public class ListContentViewActivity extends Activity implements View.OnClickLis
                     codeBook.book.remove(str_Record_Temp);
                 }
                 Toast.makeText(this,"Record added", Toast.LENGTH_SHORT).show();
-                codeBook.book.put("str_Record_Temp",codeRecord);
+                codeRecord = new CodeRecord();
+                codeRecord.account = str_Account_Temp;
+                codeRecord.password = str_Password_Temp;
+                codeRecord.remark = str_Remark_Temp;
+                codeBook.book.put(str_Record_Temp,codeRecord);
                 dataChanged = true;
                 break;
             }

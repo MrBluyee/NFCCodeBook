@@ -1,6 +1,8 @@
 package com.mrbluyee.nfccodebook.bean;
 
-public class CodeRecord {
+import java.io.Serializable;
+
+public class CodeRecord implements Serializable {
     public String account = null;
     public String password = null;
     public String remark = null;

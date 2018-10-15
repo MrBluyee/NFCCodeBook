@@ -1,8 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="#fff"
-    android:layout_height="match_parent">
+    android:background="@drawable/bg"
+    android:layout_height="wrap_content">
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:background="#fff"
+        android:scrollbars="vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#505050"
+            android:textSize="20dp"
+            android:text="Form:" />
+        <CheckBox xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/checkBox_Random_Lower"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="a-z"
+            android:textColor="#505050"
+            android:checked="true">
+        </CheckBox>
+        <CheckBox xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/checkBox_Random_Number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0-9"
+            android:textColor="#505050"
+            android:checked="true">
+        </CheckBox>
+        <CheckBox xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/checkBox_Random_Capital"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="A-Z"
+            android:textColor="#505050"
+            android:checked="true">
+        </CheckBox>
+        <CheckBox xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/checkBox_Random_Special"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#505050"
+            android:text="!-~"
+            android:checked="false">
+        </CheckBox>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#505050"
+            android:textSize="20dp"
+            android:text="Length:" />
+        <EditText
+            android:id="@+id/editText_Random_Length"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:inputType="number" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#505050"
+            android:textSize="20dp"
+            android:text="Generate:" />
+        <TextView
+            android:id="@+id/textView_Generate_Result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            android:textSize="20dp"
+            android:textColor="#505050" />
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+        <ImageButton
+            android:id="@+id/button_Random_Again"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#fff"
+            android:minWidth="15dp"
+            android:minHeight="15dp"
+            android:src="@drawable/random" />
+        <ImageButton
+            android:id="@+id/button_Random_Copy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#fff"
+            android:minWidth="15dp"
+            android:minHeight="15dp"
+            android:src="@drawable/copy" />
+    </LinearLayout>
+</RelativeLayout>

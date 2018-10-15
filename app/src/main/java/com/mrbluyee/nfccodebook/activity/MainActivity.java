@@ -60,7 +60,6 @@ public class MainActivity extends Activity {
             super.handleMessage(msg);
             Intent intent;
             Bundle bundle;
-            Log.i(activityTAG , "handler return");
             switch (msg.what) {
                 case 1: //是一张处理过的卡
                     intent = new Intent(MainActivity.this,DecodeActivity.class);
@@ -83,9 +82,8 @@ public class MainActivity extends Activity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         mTag=intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-        Toast.makeText(MainActivity.this,"Tag detected",Toast.LENGTH_SHORT).show();
-        if(mTag != null) { //handle
-            Log.i(activityTAG , "start ReadFromTagHandle");
+        if(mTag != null) {
+            Toast.makeText(MainActivity.this,"Tag detected",Toast.LENGTH_SHORT).show();
             new ReadFromTagHandle(myHandler).new FirstCheck(mTag).begin();
         }
     }
