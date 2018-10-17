@@ -36,16 +36,11 @@ public class ReadFromTagHandle {
         public void run() {
             if(mTag != null) {
                 String[] techList = mTag.getTechList();
-                for (String tech:techList){
-                    Log.i("ReadFromTagHandle" , "tag tech :" + tech + "\n");
-                }
                 byte[] tagID = mTag.getId();
-                Log.i("ReadFromTagHandle" , "tagID :" + StringUtils.bytesToHexString(tagID));
                 if (Arrays.asList(techList).contains("android.nfc.tech.IsoDep")) {
                     IsoDepClass isoDepClass = new IsoDepClass(mTag);
                     byte[] temp = isoDepClass.readNDEFFile();
                     if(temp != null) {
-                        Log.i("ReadFromTagHandle", "readNDEFFile :" + StringUtils.bytesToHexString(temp));
                         byte[] head = ArrayUtils.SubArray(temp, 0, tagID.length);
                         if (mReadHandler != null) {
                             if (Arrays.equals(head, tagID)) { //是一张处理过的卡

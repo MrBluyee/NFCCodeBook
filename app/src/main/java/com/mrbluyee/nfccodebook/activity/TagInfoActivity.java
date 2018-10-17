@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.mrbluyee.nfccodebook.R;
@@ -31,7 +32,7 @@ public class TagInfoActivity extends Activity {
     String[] techList;
     private IsoDepClass isoDepClass = null;
     private ListView taginfo_list_view;
-    private Button button_Create_CodeBook;
+    private ImageButton button_Create_CodeBook;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,9 +42,6 @@ public class TagInfoActivity extends Activity {
         mTag = intent.getParcelableExtra("mtag");
         if(mTag != null) {
             techList = mTag.getTechList();
-            for (String tech : techList) {
-                Log.i("ReadFromTagHandle", "tag tech :" + tech + "\n");
-            }
             if (Arrays.asList(techList).contains("android.nfc.tech.IsoDep")) {
                 isoDepClass = new IsoDepClass(mTag);
             }
@@ -54,7 +52,7 @@ public class TagInfoActivity extends Activity {
 
     private void initView(){
         taginfo_list_view = (ListView)findViewById(R.id.taginfo_list_view);
-        button_Create_CodeBook = (Button)findViewById(R.id.button_Create_CodeBook);
+        button_Create_CodeBook = (ImageButton)findViewById(R.id.button_Create_CodeBook);
         button_Create_CodeBook.setOnClickListener(new View.OnClickListener() {
               @Override
               public void onClick(View v) {

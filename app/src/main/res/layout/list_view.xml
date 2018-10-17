@@ -1,86 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@drawable/bg"
-    android:layout_height="wrap_content">
+    android:orientation="vertical">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#fff"
-        android:scrollbars="vertical"
-        android:orientation="vertical">
-
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#505050"
-                android:textSize="20dp"
-                android:text="Record List:" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="5dp"
-                android:text="" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#000"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="5dp"
-                android:text="" />
-
-            <ListView
-                android:id="@+id/list_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:divider="@color/colorPrimaryDark"
-                android:listSelector="#ff0000"
-                android:scrollbars="vertical" />
-        </LinearLayout>
-
-        <TextView
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageButton
+            android:id="@+id/button_Add_Record"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="5dp"
-            android:text="" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#000"/>
-        <TextView
+            android:layout_weight="1"
+            android:background="#fff"
+            android:minWidth="15dp"
+            android:minHeight="15dp"
+            android:src="@drawable/add" />
+
+        <ImageButton
+            android:id="@+id/button_Save_Record"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="5dp"
-            android:text="" />
+            android:layout_weight="1"
+            android:background="#fff"
+            android:minWidth="15dp"
+            android:minHeight="15dp"
+            android:src="@drawable/download" />
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
+        <ImageButton
+            android:id="@+id/button_Change_Key"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_weight="1"
+            android:background="#fff"
+            android:minWidth="15dp"
+            android:minHeight="15dp"
+            android:src="@drawable/key" />
 
-            <Button
-                android:id="@+id/button_Add_Record"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Add record" />
-
-            <Button
-                android:id="@+id/button_Save_Record"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Save to Tag" />
-        </LinearLayout>
-
+        <ImageButton
+            android:id="@+id/button_Delete_Account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#fff"
+            android:minWidth="15dp"
+            android:minHeight="15dp"
+            android:src="@drawable/delete_account" />
     </LinearLayout>
-</RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="5dp"
+        android:text="" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#000"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="5dp"
+        android:text="" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#505050"
+        android:textSize="20dp"
+        android:text="Record List:" />
+
+    <ListView
+        android:id="@+id/list_view"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:divider="@color/colorPrimaryDark"
+        android:scrollbars="vertical"
+        android:listSelector="#ff0000"/>
+
+</LinearLayout>

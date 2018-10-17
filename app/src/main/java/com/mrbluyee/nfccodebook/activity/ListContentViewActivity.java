@@ -97,6 +97,10 @@ public class ListContentViewActivity extends Activity implements View.OnClickLis
             editText_Account.setText(codeRecord.account);
             editText_Password.setText(codeRecord.password);
             editText_Remark.setText(codeRecord.remark);
+            setEditTextEditable(editText_Record,false);
+            setEditTextEditable(editText_Account,false);
+            setEditTextEditable(editText_Password,false);
+            setEditTextEditable(editText_Remark,false);
         }else{
             button_View_Record_status = true;
             button_View_Account_status = true;
@@ -108,10 +112,6 @@ public class ListContentViewActivity extends Activity implements View.OnClickLis
             button_Edit_Password_status = true;
             button_Edit_Remark_status = true;
         }
-        setEditTextEditable(editText_Record,false);
-        setEditTextEditable(editText_Account,false);
-        setEditTextEditable(editText_Password,false);
-        setEditTextEditable(editText_Remark,false);
     }
 
     private void setEditTextEditable(EditText editText, boolean value) {

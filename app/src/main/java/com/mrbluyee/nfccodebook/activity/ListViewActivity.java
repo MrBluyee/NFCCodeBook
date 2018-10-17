@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.mrbluyee.nfccodebook.R;
@@ -28,8 +30,8 @@ public class ListViewActivity extends Activity implements View.OnClickListener {
     private CodeBook codeBook;
     private List<String> recordList = new ArrayList<>();;
     private ListViewAdapter listViewAdapter;
-    private Button button_Add_Record;
-    private Button button_Save_Record;
+    private ImageButton button_Add_Record;
+    private ImageButton button_Save_Record;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,8 +51,8 @@ public class ListViewActivity extends Activity implements View.OnClickListener {
 
     private void initView(){
         listView = (ListView)findViewById(R.id.list_view);
-        button_Add_Record = (Button)findViewById(R.id.button_Add_Record);
-        button_Save_Record = (Button)findViewById(R.id.button_Save_Record);
+        button_Add_Record = (ImageButton)findViewById(R.id.button_Add_Record);
+        button_Save_Record = (ImageButton)findViewById(R.id.button_Save_Record);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

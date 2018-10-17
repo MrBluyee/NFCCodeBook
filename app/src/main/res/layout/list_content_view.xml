@@ -1,9 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@drawable/bg"
-    android:layout_height="wrap_content">
+    android:orientation="vertical">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageButton
+            android:id="@+id/button_Record_ShowAll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#fff"
+            android:minWidth="15dp"
+            android:minHeight="15dp"
+            android:src="@drawable/view" />
+        <ImageButton
+            android:id="@+id/button_Record_Random"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#fff"
+            android:minWidth="15dp"
+            android:minHeight="15dp"
+            android:src="@drawable/random" />
+        <ImageButton
+            android:id="@+id/button_Record_Delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#fff"
+            android:minWidth="15dp"
+            android:minHeight="15dp"
+            android:src="@drawable/delete" />
+        <ImageButton
+            android:id="@+id/button_Record_Save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#fff"
+            android:minWidth="15dp"
+            android:minHeight="15dp"
+            android:src="@drawable/save" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="5dp"
+        android:text="" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#000"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="5dp"
+        android:text="" />
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -20,305 +77,239 @@
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:background="#fff"
-                android:scrollbars="vertical"
                 android:orientation="vertical">
+                <TextView
+                    android:id="@+id/textView_Record"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:text="Record:" />
+
+                <EditText
+                    android:id="@+id/editText_Record"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine" />
 
                 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <TextView
-                        android:id="@+id/textView_Record"
+                    android:orientation="horizontal">
+                    <ImageButton
+                        android:id="@+id/button_View_Record"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="20dp"
-                        android:text="Record:" />
-
-                    <EditText
-                        android:id="@+id/editText_Record"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textMultiLine" />
-
-                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <ImageButton
-                            android:id="@+id/button_View_Record"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="#fff"
-                            android:minWidth="15dp"
-                            android:minHeight="15dp"
-                            android:src="@drawable/view" />
-                        <ImageButton
-                            android:id="@+id/button_Clipboard_Record"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="#fff"
-                            android:minWidth="15dp"
-                            android:minHeight="15dp"
-                            android:src="@drawable/copy" />
-                        <ImageButton
-                            android:id="@+id/button_Notification_Record"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="#fff"
-                            android:minWidth="15dp"
-                            android:minHeight="15dp"
-                            android:src="@drawable/notification" />
-                        <ImageButton
-                            android:id="@+id/button_Edit_Record"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="#fff"
-                            android:minWidth="15dp"
-                            android:minHeight="15dp"
-                            android:src="@drawable/edit" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <TextView
-                        android:id="@+id/textView_Account"
+                        android:layout_weight="1"
+                        android:background="#fff"
+                        android:minWidth="15dp"
+                        android:minHeight="15dp"
+                        android:src="@drawable/view" />
+                    <ImageButton
+                        android:id="@+id/button_Clipboard_Record"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="20dp"
-                        android:text="Account:" />
-                    <EditText
-                        android:id="@+id/editText_Account"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textMultiLine" />
-
-                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <ImageButton
-                            android:id="@+id/button_View_Account"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="#fff"
-                            android:minWidth="15dp"
-                            android:minHeight="15dp"
-                            android:src="@drawable/view" />
-                        <ImageButton
-                            android:id="@+id/button_Clipboard_Account"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="#fff"
-                            android:minWidth="15dp"
-                            android:minHeight="15dp"
-                            android:src="@drawable/copy" />
-                        <ImageButton
-                            android:id="@+id/button_Notification_Account"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="#fff"
-                            android:minWidth="15dp"
-                            android:minHeight="15dp"
-                            android:src="@drawable/notification" />
-                        <ImageButton
-                            android:id="@+id/button_Edit_Account"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="#fff"
-                            android:minWidth="15dp"
-                            android:minHeight="15dp"
-                            android:src="@drawable/edit" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <TextView
-                        android:id="@+id/textView_Password"
+                        android:layout_weight="1"
+                        android:background="#fff"
+                        android:minWidth="15dp"
+                        android:minHeight="15dp"
+                        android:src="@drawable/copy" />
+                    <ImageButton
+                        android:id="@+id/button_Notification_Record"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="20dp"
-                        android:text="Password:" />
-                    <EditText
-                        android:id="@+id/editText_Password"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textMultiLine" />
-
-                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <ImageButton
-                            android:id="@+id/button_View_Password"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="#fff"
-                            android:minWidth="15dp"
-                            android:minHeight="15dp"
-                            android:src="@drawable/view" />
-                        <ImageButton
-                            android:id="@+id/button_Clipboard_Password"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="#fff"
-                            android:minWidth="15dp"
-                            android:minHeight="15dp"
-                            android:src="@drawable/copy" />
-                        <ImageButton
-                            android:id="@+id/button_Notification_Password"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="#fff"
-                            android:minWidth="15dp"
-                            android:minHeight="15dp"
-                            android:src="@drawable/notification" />
-                        <ImageButton
-                            android:id="@+id/button_Edit_Password"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="#fff"
-                            android:minWidth="15dp"
-                            android:minHeight="15dp"
-                            android:src="@drawable/edit" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <TextView
-                        android:id="@+id/textView_Remark"
+                        android:layout_weight="1"
+                        android:background="#fff"
+                        android:minWidth="15dp"
+                        android:minHeight="15dp"
+                        android:src="@drawable/notification" />
+                    <ImageButton
+                        android:id="@+id/button_Edit_Record"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="20dp"
-                        android:text="Remark:" />
-                    <EditText
-                        android:id="@+id/editText_Remark"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textMultiLine" />
-
-                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <ImageButton
-                            android:id="@+id/button_View_Remark"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="#fff"
-                            android:minWidth="15dp"
-                            android:minHeight="15dp"
-                            android:src="@drawable/view" />
-                        <ImageButton
-                            android:id="@+id/button_Clipboard_Remark"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="#fff"
-                            android:minWidth="15dp"
-                            android:minHeight="15dp"
-                            android:src="@drawable/copy" />
-                        <ImageButton
-                            android:id="@+id/button_Notification_Remark"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="#fff"
-                            android:minWidth="15dp"
-                            android:minHeight="15dp"
-                            android:src="@drawable/notification" />
-                        <ImageButton
-                            android:id="@+id/button_Edit_Remark"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="#fff"
-                            android:minWidth="15dp"
-                            android:minHeight="15dp"
-                            android:src="@drawable/edit" />
-                    </LinearLayout>
+                        android:layout_weight="1"
+                        android:background="#fff"
+                        android:minWidth="15dp"
+                        android:minHeight="15dp"
+                        android:src="@drawable/edit" />
                 </LinearLayout>
             </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:text="" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#000"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:text="" />
 
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <ImageButton
-                    android:id="@+id/button_Record_ShowAll"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/textView_Account"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="#fff"
-                    android:minWidth="15dp"
-                    android:minHeight="15dp"
-                    android:src="@drawable/view" />
-                <ImageButton
-                    android:id="@+id/button_Record_Random"
+                    android:textSize="20dp"
+                    android:text="Account:" />
+                <EditText
+                    android:id="@+id/editText_Account"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine" />
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <ImageButton
+                        android:id="@+id/button_View_Account"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="#fff"
+                        android:minWidth="15dp"
+                        android:minHeight="15dp"
+                        android:src="@drawable/view" />
+                    <ImageButton
+                        android:id="@+id/button_Clipboard_Account"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="#fff"
+                        android:minWidth="15dp"
+                        android:minHeight="15dp"
+                        android:src="@drawable/copy" />
+                    <ImageButton
+                        android:id="@+id/button_Notification_Account"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="#fff"
+                        android:minWidth="15dp"
+                        android:minHeight="15dp"
+                        android:src="@drawable/notification" />
+                    <ImageButton
+                        android:id="@+id/button_Edit_Account"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="#fff"
+                        android:minWidth="15dp"
+                        android:minHeight="15dp"
+                        android:src="@drawable/edit" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/textView_Password"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="#fff"
-                    android:minWidth="15dp"
-                    android:minHeight="15dp"
-                    android:src="@drawable/random" />
-                <ImageButton
-                    android:id="@+id/button_Record_Delete"
+                    android:textSize="20dp"
+                    android:text="Password:" />
+                <EditText
+                    android:id="@+id/editText_Password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine" />
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <ImageButton
+                        android:id="@+id/button_View_Password"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="#fff"
+                        android:minWidth="15dp"
+                        android:minHeight="15dp"
+                        android:src="@drawable/view" />
+                    <ImageButton
+                        android:id="@+id/button_Clipboard_Password"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="#fff"
+                        android:minWidth="15dp"
+                        android:minHeight="15dp"
+                        android:src="@drawable/copy" />
+                    <ImageButton
+                        android:id="@+id/button_Notification_Password"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="#fff"
+                        android:minWidth="15dp"
+                        android:minHeight="15dp"
+                        android:src="@drawable/notification" />
+                    <ImageButton
+                        android:id="@+id/button_Edit_Password"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="#fff"
+                        android:minWidth="15dp"
+                        android:minHeight="15dp"
+                        android:src="@drawable/edit" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/textView_Remark"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="#fff"
-                    android:minWidth="15dp"
-                    android:minHeight="15dp"
-                    android:src="@drawable/delete" />
-                <ImageButton
-                    android:id="@+id/button_Record_Save"
-                    android:layout_width="wrap_content"
+                    android:textSize="20dp"
+                    android:text="Remark:" />
+                <EditText
+                    android:id="@+id/editText_Remark"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="#fff"
-                    android:minWidth="15dp"
-                    android:minHeight="15dp"
-                    android:src="@drawable/save" />
+                    android:inputType="textMultiLine" />
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <ImageButton
+                        android:id="@+id/button_View_Remark"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="#fff"
+                        android:minWidth="15dp"
+                        android:minHeight="15dp"
+                        android:src="@drawable/view" />
+                    <ImageButton
+                        android:id="@+id/button_Clipboard_Remark"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="#fff"
+                        android:minWidth="15dp"
+                        android:minHeight="15dp"
+                        android:src="@drawable/copy" />
+                    <ImageButton
+                        android:id="@+id/button_Notification_Remark"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="#fff"
+                        android:minWidth="15dp"
+                        android:minHeight="15dp"
+                        android:src="@drawable/notification" />
+                    <ImageButton
+                        android:id="@+id/button_Edit_Remark"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="#fff"
+                        android:minWidth="15dp"
+                        android:minHeight="15dp"
+                        android:src="@drawable/edit" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-</RelativeLayout>
+</LinearLayout>
