@@ -28,6 +28,10 @@
         </activity>
         <activity android:name=".activity.TagInfoActivity">
         </activity>
+        <activity android:name=".activity.CreatePasswdActivity">
+        </activity>
+        <activity android:name=".activity.ChangePasswdActivity">
+        </activity>
         <activity android:name=".activity.DecodeActivity">
         </activity>
         <activity android:name=".activity.ListViewActivity">

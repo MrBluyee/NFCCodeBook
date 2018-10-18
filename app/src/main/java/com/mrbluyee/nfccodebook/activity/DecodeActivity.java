@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.mrbluyee.nfccodebook.R;
@@ -22,8 +23,9 @@ public class DecodeActivity extends Activity {
     private byte[] tagContent = null;
     private byte[] tagID = null;
     private EditText editText_Decode_passwd;
-    private Button button_Decode_Enter;
+    private ImageButton button_Decode_Enter;
     private MyHandler myHandler;
+    private String passwd;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,13 +41,15 @@ public class DecodeActivity extends Activity {
 
     private void initView(){
         editText_Decode_passwd = (EditText)findViewById(R.id.editText_Decode_passwd);
-        button_Decode_Enter = (Button)findViewById(R.id.button_Decode_Enter);
+        button_Decode_Enter = (ImageButton)findViewById(R.id.button_Decode_Enter);
         button_Decode_Enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String passwd = editText_Decode_passwd.getText().toString();
-                if(passwd != null){
+                passwd = editText_Decode_passwd.getText().toString();
+                if(!passwd.equals("")){
                     new ReadFromTagHandle(myHandler).new ContentCheck(tagID,tagContent,passwd).begin();
+                }else{
+                    Toast.makeText(DecodeActivity.this,"Please enter your password!",Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -71,6 +75,7 @@ public class DecodeActivity extends Activity {
                         SerializableHashMap myMap = new SerializableHashMap();
                         myMap.setMap(codeBook.book);
                         bundle.putSerializable("map",myMap);
+                        bundle.putString("key",passwd);
                         intent.putExtra("bundle",bundle);
                         startActivity(intent);
                     }else{

@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.mrbluyee.nfccodebook.R;
+import com.mrbluyee.nfccodebook.application.WritetoTagHandle;
 import com.mrbluyee.nfccodebook.bean.CodeBook;
 import com.mrbluyee.nfccodebook.adapter.ListViewAdapter;
 import com.mrbluyee.nfccodebook.bean.CodeRecord;
@@ -32,6 +33,8 @@ public class ListViewActivity extends Activity implements View.OnClickListener {
     private ListViewAdapter listViewAdapter;
     private ImageButton button_Add_Record;
     private ImageButton button_Save_Record;
+    private ImageButton button_Change_Key;
+    private String passwd;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,11 +44,15 @@ public class ListViewActivity extends Activity implements View.OnClickListener {
         Bundle bundle = getIntent().getBundleExtra("bundle");
         if(bundle != null) {
             SerializableHashMap serializableHashMap = (SerializableHashMap) bundle.get("map");
-            codeBook = new CodeBook(serializableHashMap.getMap());
-            initData();
-        }else{
-            HashMap<String,CodeRecord> temp = new HashMap<String,CodeRecord>();
-            codeBook = new CodeBook(temp);
+            if(savedInstanceState != null) {
+                passwd = (String)bundle.get("key");
+                codeBook = new CodeBook(serializableHashMap.getMap());
+                initData();
+            }else{
+                passwd = (String)bundle.get("newkey");
+                HashMap<String,CodeRecord> temp = new HashMap<String,CodeRecord>();
+                codeBook = new CodeBook(temp);
+            }
         }
     }
 
@@ -53,6 +60,7 @@ public class ListViewActivity extends Activity implements View.OnClickListener {
         listView = (ListView)findViewById(R.id.list_view);
         button_Add_Record = (ImageButton)findViewById(R.id.button_Add_Record);
         button_Save_Record = (ImageButton)findViewById(R.id.button_Save_Record);
+        button_Change_Key = (ImageButton)findViewById(R.id.button_Change_Key);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -67,18 +75,9 @@ public class ListViewActivity extends Activity implements View.OnClickListener {
                 startActivityForResult(intent,1);
             }
         });
-        button_Add_Record.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ListViewActivity.this,ListContentViewActivity.class);
-                SerializableHashMap myMap = new SerializableHashMap();
-                myMap.setMap(codeBook.book);
-                Bundle bundle=new Bundle();
-                bundle.putSerializable("map",myMap);
-                intent.putExtra("bundle",bundle);
-                startActivityForResult(intent,1);
-            }
-        });
+        button_Add_Record.setOnClickListener(this);
+        button_Save_Record.setOnClickListener(this);
+        button_Change_Key.setOnClickListener(this);
     }
 
     private void initData(){
@@ -117,13 +116,15 @@ public class ListViewActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1) {
+        if(requestCode == 1) { //ListContentViewActivity
             if (resultCode == 2) {//数据有更新
                 Bundle bundle = data.getBundleExtra("bundle");
                 SerializableHashMap serializableHashMap = (SerializableHashMap) bundle.get("map");
                 this.codeBook = new CodeBook(serializableHashMap.getMap());
                 updateListView();
             }
+        }else if(requestCode == 2){ //ChangePasswdActivity
+
         }
     }
 
@@ -154,6 +155,31 @@ public class ListViewActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.button_Add_Record:{
+                Intent intent = new Intent(ListViewActivity.this,ListContentViewActivity.class);
+                SerializableHashMap myMap = new SerializableHashMap();
+                myMap.setMap(codeBook.book);
+                Bundle bundle=new Bundle();
+                bundle.putSerializable("map",myMap);
+                intent.putExtra("bundle",bundle);
+                startActivityForResult(intent,1);
+                break;
+            }
+            case R.id.button_Save_Record:{
 
+                break;
+            }
+            case R.id.button_Change_Key:{
+                Intent intent = new Intent(ListViewActivity.this,ChangePasswdActivity.class);
+                Bundle bundle=new Bundle();
+                bundle.putString("key",passwd);
+                intent.putExtra("bundle",bundle);
+                startActivityForResult(intent,2);
+                break;
+            }
+            default:
+                break;
+        }
     }
 }

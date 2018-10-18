@@ -11,7 +11,7 @@ import java.io.IOException;
 public class TNCOSTag extends IsoDepClass{
     private Tag mTag = null;
     private IsoDep isoDep = null;
-    private byte[] defaultKey = {0x40,0x41,0x42,0x43,0x44,0x45,0x46,0x47};
+    public byte[] defaultKey = {0x40,0x41,0x42,0x43,0x44,0x45,0x46,0x47};
 
     public TNCOSTag(Tag mTag) {
         super(mTag);
@@ -22,34 +22,30 @@ public class TNCOSTag extends IsoDepClass{
     public boolean eraseNDEFMessage(byte[] key)throws IOException {
         //80 0E 00 00 08
         //90 00
+        boolean status = false;
         byte[] cmd = {(byte) 0x80,0x0e,0x00,0x00,0x08};
         byte[] cmd1 = ArrayUtils.MergerArray(cmd,key);
         byte[] ack = isoDep.transceive (cmd1);
         if(ack.length >= 2) {
             if (ack[0] == -0x70 && ack[1] == 0x00) {
-                return true;
-            } else {
-                return false;
+                status =  true;
             }
-        } else {
-            return false;
         }
+        return status;
     }
 
     private boolean changePINCommand(byte[] oldkey,byte[] newkey)throws IOException {
+        boolean status = false;
         byte[] cmd = {(byte) 0x80,0x24,0x00,0x00,0x10};
         byte[] cmd1 = ArrayUtils.MergerArray(cmd,oldkey);
         byte[] cmd2 = ArrayUtils.MergerArray(cmd1,newkey);
         byte[] ack = isoDep.transceive (cmd2);
         if(ack.length >= 2) {
             if (ack[0] == -0x70 && ack[1] == 0x00) {
-                return true;
-            } else {
-                return false;
+                status =  true;
             }
-        } else {
-            return false;
         }
+        return status;
     }
 
     public boolean eraseNDEFFile(byte[] key){

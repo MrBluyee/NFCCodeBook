@@ -56,7 +56,7 @@ public class TagInfoActivity extends Activity {
         button_Create_CodeBook.setOnClickListener(new View.OnClickListener() {
               @Override
               public void onClick(View v) {
-                  Intent intent = new Intent(TagInfoActivity.this, ListViewActivity.class);
+                  Intent intent = new Intent(TagInfoActivity.this, CreatePasswdActivity.class);
                   startActivity(intent);
               }
             }

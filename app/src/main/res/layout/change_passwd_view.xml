@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/bg"
+    android:layout_height="wrap_content">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/key" />
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical">
+        <TextView
+            android:layout_centerInParent="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:textSize="20dp"
+            android:text="Check old Password:" />
+
+        <EditText
+            android:id="@+id/editText_Check_old_Passwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Please enter old password"
+            android:inputType="textMultiLine" />
+
+        <TextView
+            android:layout_centerInParent="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:textSize="20dp"
+            android:text="Create new password:" />
+
+        <EditText
+            android:id="@+id/editText_Create_new_Passwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Please enter a new password"
+            android:inputType="textMultiLine" />
+
+        <TextView
+            android:layout_centerInParent="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:textSize="20dp"
+            android:text="Confirm new password:" />
+
+        <EditText
+            android:id="@+id/editText_Check_new_Passwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Please enter the password again"
+            android:inputType="textMultiLine" />
+
+        <ImageButton
+            android:id="@+id/button_Change_Passwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="1"
+            android:background="#fff"
+            android:minWidth="15dp"
+            android:minHeight="15dp"
+            android:src="@drawable/check" />
+    </LinearLayout>
+</RelativeLayout>
