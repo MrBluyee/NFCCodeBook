@@ -44,7 +44,7 @@ public class ReadFromTagHandle {
                         byte[] head = ArrayUtils.SubArray(temp, 0, tagID.length);
                         if (mReadHandler != null) {
                             if (Arrays.equals(head, tagID)) { //是一张处理过的卡
-                                Message message = Message.obtain(mReadHandler, 1, ArrayUtils.SubArray(temp, tagID.length, temp.length));
+                                Message message = Message.obtain(mReadHandler, 1, ArrayUtils.SubArray(temp, tagID.length, temp.length - tagID.length));
                                 message.sendToTarget();
                             } else { //卡未处理过
                                 Message message = Message.obtain(mReadHandler, 2);
@@ -80,7 +80,7 @@ public class ReadFromTagHandle {
                     byte[] head = ArrayUtils.SubArray(temp, 0, tagID.length);
                     if (mReadHandler != null) {
                         if (Arrays.equals(head, tagID)) { //解码正确
-                            String contentstr = GzipUtils.unCompress(ArrayUtils.SubArray(temp, tagID.length, temp.length));
+                            String contentstr = GzipUtils.unCompress(ArrayUtils.SubArray(temp, tagID.length, temp.length - tagID.length));
                             Message message = Message.obtain(mReadHandler, 1,contentstr);
                             message.sendToTarget();
                         } else { //解码错误

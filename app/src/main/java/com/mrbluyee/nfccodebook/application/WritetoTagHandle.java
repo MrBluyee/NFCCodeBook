@@ -43,12 +43,19 @@ public class WritetoTagHandle {
                     TNCOSTag tncosTag = new TNCOSTag(mTag);
                     byte[] gzip_data = GzipUtils.compress(data);
                     byte[] encry_data = ArrayUtils.MergerArray(tagID,gzip_data);
-                    byte[] write_data = AESUtils.encrypt(encry_data,key);
-                    if(tncosTag.writeNDEFFile(write_data,tncosTag.defaultKey)){ //写入成功
-                        Message message = Message.obtain(mReadHandler, 4);
-                        message.sendToTarget();
-                    }else{
-                        Message message = Message.obtain(mReadHandler, 5);
+                    byte[] encryed_data = AESUtils.encrypt(encry_data,key);
+                    byte[] write_data = ArrayUtils.MergerArray(tagID,encryed_data);
+                    int tagCapabilityLength = tncosTag.getTagCapabilityLength();
+                    if(tagCapabilityLength > write_data.length) {
+                        if (tncosTag.writeNDEFFile(write_data, tncosTag.defaultKey)) { //写入成功
+                            Message message = Message.obtain(mReadHandler, 4);
+                            message.sendToTarget();
+                        } else { //写入失败
+                            Message message = Message.obtain(mReadHandler, 5);
+                            message.sendToTarget();
+                        }
+                    }else { //空间不够
+                        Message message = Message.obtain(mReadHandler, 6);
                         message.sendToTarget();
                     }
                 }

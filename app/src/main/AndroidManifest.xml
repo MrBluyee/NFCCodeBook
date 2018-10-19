@@ -40,6 +40,10 @@
         </activity>
         <activity android:name=".activity.RandomPasswdActivity">
         </activity>
+        <activity android:name=".activity.WriteToTagActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/dialogstyle">
+        </activity>
     </application>
 
 </manifest>

@@ -78,6 +78,6 @@
         android:layout_height="fill_parent"
         android:divider="@color/colorPrimaryDark"
         android:scrollbars="vertical"
-        android:listSelector="#ff0000"/>
+        android:listSelector="#fff"/>
 
 </LinearLayout>
