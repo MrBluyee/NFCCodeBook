@@ -23,20 +23,27 @@ public class GzipUtils {
     }
 
     public static String unCompress(byte[] data){
-        if(data == null){
+        if(data == null || data.length == 0){
             return null;
         }
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
         try{
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
             ByteArrayInputStream in = new ByteArrayInputStream(data);
             GZIPInputStream gzip = new GZIPInputStream(in);
             byte[] buffer = new byte[256];
-            int n = 0;
-            while((n = gzip.read(buffer)) >= 0) {
+            int n = -1;
+            while((n = gzip.read(buffer)) > 0) {
                 out.write(buffer, 0, n);
             }
-            return out.toString("UTF-8");
+            gzip.close();
+            out.close();
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            String result = out.toString("UTF-8");
+            return result;
+        }catch (Exception e) {
             e.printStackTrace();
         }
         return null;

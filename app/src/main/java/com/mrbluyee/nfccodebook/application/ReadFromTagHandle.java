@@ -13,6 +13,7 @@ import com.mrbluyee.nfccodebook.utils.ArrayUtils;
 import com.mrbluyee.nfccodebook.utils.GzipUtils;
 import com.mrbluyee.nfccodebook.utils.StringUtils;
 
+import java.io.EOFException;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -84,7 +85,8 @@ public class ReadFromTagHandle {
                     byte[] head = ArrayUtils.SubArray(temp, 0, tagID.length);
                     if (mReadHandler != null) {
                         if (Arrays.equals(head, tagID)) { //解码正确
-                            String contentstr = GzipUtils.unCompress(ArrayUtils.SubArray(temp, tagID.length, temp.length - tagID.length));
+                            byte[] ugzipdata = ArrayUtils.SubArray(temp, tagID.length, temp.length - tagID.length);
+                            String contentstr = GzipUtils.unCompress(ugzipdata);
                             Message message = Message.obtain(mReadHandler, StatusCode.DECODESUCCEED,contentstr);
                             message.sendToTarget();
                         } else { //解码错误

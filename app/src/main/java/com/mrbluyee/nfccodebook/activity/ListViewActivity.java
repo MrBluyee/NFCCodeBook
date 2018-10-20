@@ -11,6 +11,7 @@ import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -94,17 +95,22 @@ public class ListViewActivity extends Activity implements View.OnClickListener {
     }
 
     private void initData(){
-        if(codeBook != null) {
-            Iterator<Map.Entry<String, CodeRecord>> iterator = this.codeBook.book.entrySet().iterator();
-            while (iterator.hasNext()) {
-                Map.Entry<String, CodeRecord> entry = iterator.next();
-                String key = entry.getKey();
-                recordList.add(key);
+        ListViewActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (codeBook != null) {
+                    Iterator<Map.Entry<String, CodeRecord>> iterator = ListViewActivity.this.codeBook.book.entrySet().iterator();
+                    while (iterator.hasNext()) {
+                        Map.Entry<String, CodeRecord> entry = iterator.next();
+                        String key = entry.getKey();
+                        recordList.add(key);
+                    }
+                }
+                listViewAdapter = new ListViewAdapter(ListViewActivity.this, recordList);
+                listView.setAdapter(listViewAdapter);
+                listView.setSelection(0);
             }
-        }
-        listViewAdapter = new ListViewAdapter(this,recordList);
-        listView.setAdapter(listViewAdapter);
-        listView.setSelection(0);
+        });
     }
 
     private void updateListView(){
