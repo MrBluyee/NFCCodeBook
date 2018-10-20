@@ -32,6 +32,8 @@
         </activity>
         <activity android:name=".activity.ChangePasswdActivity">
         </activity>
+        <activity android:name=".activity.DeleteConfirmActivity">
+        </activity>
         <activity android:name=".activity.DecodeActivity">
         </activity>
         <activity android:name=".activity.ListViewActivity">

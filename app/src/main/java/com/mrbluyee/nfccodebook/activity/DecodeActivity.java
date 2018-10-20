@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.mrbluyee.nfccodebook.R;
 import com.mrbluyee.nfccodebook.bean.CodeBook;
 import com.mrbluyee.nfccodebook.application.ReadFromTagHandle;
+import com.mrbluyee.nfccodebook.bean.StatusCode;
 import com.mrbluyee.nfccodebook.utils.SerializableHashMap;
 
 public class DecodeActivity extends Activity {
@@ -66,7 +67,7 @@ public class DecodeActivity extends Activity {
             // TODO Auto-generated method stub
             super.handleMessage(msg);
             switch (msg.what) {
-                case 1: //解码正确
+                case StatusCode.DECODESUCCEED: //解码正确
                     String contentstr = (String) msg.obj;
                     CodeBook codeBook = new CodeBook(contentstr);
                     if(codeBook.book != null) {
@@ -82,7 +83,7 @@ public class DecodeActivity extends Activity {
                         Toast.makeText(DecodeActivity.this,"broken file!",Toast.LENGTH_SHORT).show();
                     }
                     break;
-                case 2: //解码错误
+                case StatusCode.DECODEFAILED: //解码错误
                     Toast.makeText(DecodeActivity.this,"wrong password!",Toast.LENGTH_SHORT).show();
                     break;
             }

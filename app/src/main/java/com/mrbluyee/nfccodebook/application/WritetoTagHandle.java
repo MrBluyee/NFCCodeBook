@@ -4,6 +4,7 @@ import android.nfc.Tag;
 import android.os.Handler;
 import android.os.Message;
 
+import com.mrbluyee.nfccodebook.bean.StatusCode;
 import com.mrbluyee.nfccodebook.connectivity.IsoDepClass;
 import com.mrbluyee.nfccodebook.specialTag.TNCOSTag;
 import com.mrbluyee.nfccodebook.utils.AESUtils;
@@ -47,15 +48,39 @@ public class WritetoTagHandle {
                     byte[] write_data = ArrayUtils.MergerArray(tagID,encryed_data);
                     int tagCapabilityLength = tncosTag.getTagCapabilityLength();
                     if(tagCapabilityLength > write_data.length) {
-                        if (tncosTag.writeNDEFFile(write_data, tncosTag.defaultKey)) { //写入成功
-                            Message message = Message.obtain(mReadHandler, 4);
+                        if (tncosTag.writeNDEFFileWithKey(write_data, tncosTag.defaultKey)) { //写入成功
+                            Message message = Message.obtain(mReadHandler, StatusCode.WRITETOTAGSUCCEED);
                             message.sendToTarget();
                         } else { //写入失败
-                            Message message = Message.obtain(mReadHandler, 5);
+                            Message message = Message.obtain(mReadHandler, StatusCode.WRITETOTAGFAILED);
                             message.sendToTarget();
                         }
                     }else { //空间不够
-                        Message message = Message.obtain(mReadHandler, 6);
+                        Message message = Message.obtain(mReadHandler, StatusCode.SPACENOTENOUGH);
+                        message.sendToTarget();
+                    }
+                }
+            }
+        }
+    }
+
+    public class ClearTag implements Runnable {
+        public void begin() {
+            new Thread(this).start();
+        }
+
+        @Override
+        public void run() {
+            if(mTag != null) {
+                String[] techList = mTag.getTechList();
+                byte[] tagID = mTag.getId();
+                if (Arrays.asList(techList).contains("android.nfc.tech.IsoDep")) {
+                    TNCOSTag tncosTag = new TNCOSTag(mTag);
+                    if (tncosTag.clearNDEFFileWithKey(tncosTag.defaultKey)) { //清除成功
+                        Message message = Message.obtain(mReadHandler, StatusCode.CLEARTAGSUCCEED);
+                        message.sendToTarget();
+                    } else { //清除失败
+                        Message message = Message.obtain(mReadHandler, StatusCode.CLEARTAGFAILED);
                         message.sendToTarget();
                     }
                 }

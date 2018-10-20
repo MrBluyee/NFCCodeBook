@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import com.mrbluyee.nfccodebook.bean.StatusCode;
 import com.mrbluyee.nfccodebook.connectivity.IsoDepClass;
 import com.mrbluyee.nfccodebook.utils.AESUtils;
 import com.mrbluyee.nfccodebook.utils.ArrayUtils;
@@ -44,13 +45,16 @@ public class ReadFromTagHandle {
                         byte[] head = ArrayUtils.SubArray(temp, 0, tagID.length);
                         if (mReadHandler != null) {
                             if (Arrays.equals(head, tagID)) { //是一张处理过的卡
-                                Message message = Message.obtain(mReadHandler, 1, ArrayUtils.SubArray(temp, tagID.length, temp.length - tagID.length));
+                                Message message = Message.obtain(mReadHandler, StatusCode.USEDCARD, ArrayUtils.SubArray(temp, tagID.length, temp.length - tagID.length));
                                 message.sendToTarget();
                             } else { //卡未处理过
-                                Message message = Message.obtain(mReadHandler, 2);
+                                Message message = Message.obtain(mReadHandler, StatusCode.EMPTYCARD);
                                 message.sendToTarget();
                             }
                         }
+                    }else{ //卡未处理过
+                        Message message = Message.obtain(mReadHandler, StatusCode.EMPTYCARD);
+                        message.sendToTarget();
                     }
                 }
             }
@@ -81,10 +85,10 @@ public class ReadFromTagHandle {
                     if (mReadHandler != null) {
                         if (Arrays.equals(head, tagID)) { //解码正确
                             String contentstr = GzipUtils.unCompress(ArrayUtils.SubArray(temp, tagID.length, temp.length - tagID.length));
-                            Message message = Message.obtain(mReadHandler, 1,contentstr);
+                            Message message = Message.obtain(mReadHandler, StatusCode.DECODESUCCEED,contentstr);
                             message.sendToTarget();
                         } else { //解码错误
-                            Message message = Message.obtain(mReadHandler, 2);
+                            Message message = Message.obtain(mReadHandler, StatusCode.DECODEFAILED);
                             message.sendToTarget();
                         }
                     }

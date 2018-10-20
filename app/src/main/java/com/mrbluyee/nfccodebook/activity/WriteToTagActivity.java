@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.mrbluyee.nfccodebook.R;
 import com.mrbluyee.nfccodebook.application.WritetoTagHandle;
 import com.mrbluyee.nfccodebook.bean.CodeBook;
+import com.mrbluyee.nfccodebook.bean.StatusCode;
 import com.mrbluyee.nfccodebook.utils.SerializableHashMap;
 
 public class WriteToTagActivity extends Activity {
@@ -29,6 +30,7 @@ public class WriteToTagActivity extends Activity {
     private CodeBook codeBook;
     private ImageView write_to_tag_imageview;
     private MyHandler myHandler;
+    private Boolean clearTagFlag = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,6 +44,10 @@ public class WriteToTagActivity extends Activity {
             if (serializableHashMap != null) {
                 passwd = (String) bundle.get("key");
                 codeBook = new CodeBook(serializableHashMap.getMap());
+            }
+            Boolean clear_tag = (boolean)bundle.getBoolean("cleartag");
+            if(clear_tag != null){
+                clearTagFlag = clear_tag;
             }
         }
     }
@@ -73,7 +79,11 @@ public class WriteToTagActivity extends Activity {
         super.onNewIntent(intent);
         mTag=intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
         if(mTag != null) {
-            new WritetoTagHandle(myHandler,mTag).new WritetoTag(codeBook.convertRecordToString(),passwd).begin();
+            if(clearTagFlag){
+                new WritetoTagHandle(myHandler, mTag).new ClearTag().begin();
+            }else {
+                new WritetoTagHandle(myHandler, mTag).new WritetoTag(codeBook.convertRecordToString(), passwd).begin();
+            }
         }
     }
 
@@ -111,17 +121,29 @@ public class WriteToTagActivity extends Activity {
         public void handleMessage(Message msg) {
             // TODO Auto-generated method stub
             super.handleMessage(msg);
+            Intent intent;
             switch (msg.what) {
-                case 4: //写入成功
+                case StatusCode.WRITETOTAGSUCCEED: //写入成功
                     Toast.makeText(context,"Write Successed", Toast.LENGTH_SHORT).show();
                     break;
-                case 5: //写入失败
+                case StatusCode.WRITETOTAGFAILED: //写入失败
                     Toast.makeText(context,"Write Failed", Toast.LENGTH_SHORT).show();
                     break;
-                case 6: //空间不够
+                case StatusCode.SPACENOTENOUGH: //空间不够
                     Toast.makeText(context,"Space not enough", Toast.LENGTH_SHORT).show();
                     break;
+                case StatusCode.CLEARTAGSUCCEED: //清除成功
+                    Toast.makeText(context,"Clear Successed", Toast.LENGTH_SHORT).show();
+                    intent = new Intent();
+                    setResult(StatusCode.CLEARTAGSUCCEED, intent);//清除成功
+                    break;
+                case StatusCode.CLEARTAGFAILED: //清除失败
+                    Toast.makeText(context,"Clear Failed", Toast.LENGTH_SHORT).show();
+                    intent = new Intent();
+                    setResult(StatusCode.CLEARTAGFAILED, intent);//清除失败
+                    break;
             }
+            finish();
         }
     }
 }

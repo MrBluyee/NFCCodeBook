@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.mrbluyee.nfccodebook.R;
+import com.mrbluyee.nfccodebook.bean.StatusCode;
 import com.mrbluyee.nfccodebook.utils.SerializableHashMap;
 
 public class ChangePasswdActivity extends Activity {
@@ -64,9 +65,9 @@ public class ChangePasswdActivity extends Activity {
             Bundle bundle=new Bundle();
             bundle.putString("newkey",newPasswd);
             intent.putExtra("bundle",bundle);
-            setResult(2, intent);//数据更新
+            setResult(StatusCode.DATAUPDATED, intent);//数据更新
         }else {
-            setResult(3, intent);//数据未更新
+            setResult(StatusCode.DATANOTUPDATED, intent);//数据未更新
         }
         super.onBackPressed();
     }

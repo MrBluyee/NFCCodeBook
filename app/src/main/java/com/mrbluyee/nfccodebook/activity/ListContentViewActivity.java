@@ -15,6 +15,7 @@ import android.widget.ToggleButton;
 import com.mrbluyee.nfccodebook.R;
 import com.mrbluyee.nfccodebook.bean.CodeBook;
 import com.mrbluyee.nfccodebook.bean.CodeRecord;
+import com.mrbluyee.nfccodebook.bean.StatusCode;
 import com.mrbluyee.nfccodebook.utils.ClipboardUtils;
 import com.mrbluyee.nfccodebook.utils.NotificationUtils;
 import com.mrbluyee.nfccodebook.utils.SerializableHashMap;
@@ -180,9 +181,9 @@ public class ListContentViewActivity extends Activity implements View.OnClickLis
             Bundle bundle=new Bundle();
             bundle.putSerializable("map",myMap);
             intent.putExtra("bundle",bundle);
-            setResult(2, intent);//数据更新
+            setResult(StatusCode.DATAUPDATED, intent);//数据更新
         }else {
-            setResult(3, intent);//数据未更新
+            setResult(StatusCode.DATANOTUPDATED, intent);//数据未更新
         }
         super.onBackPressed();
     }
@@ -428,22 +429,26 @@ public class ListContentViewActivity extends Activity implements View.OnClickLis
                 break;
             }
             case R.id.button_Record_Save:{
-                if(recordName != null){ //更新
-                    if(codeBook.book.get(recordName) != null) {
-                        codeBook.book.remove(recordName);
-                        Toast.makeText(this, "Record changed", Toast.LENGTH_SHORT).show();
+                if(!str_Record_Temp.equals("")) {
+                    if (recordName != null) { //更新
+                        if (codeBook.book.get(recordName) != null) {
+                            codeBook.book.remove(recordName);
+                            Toast.makeText(this, "Record changed", Toast.LENGTH_SHORT).show();
+                        }
                     }
+                    if (codeBook.book.get(str_Record_Temp) != null) {
+                        codeBook.book.remove(str_Record_Temp);
+                    }
+                    Toast.makeText(this, "Record added", Toast.LENGTH_SHORT).show();
+                    codeRecord = new CodeRecord();
+                    codeRecord.account = str_Account_Temp;
+                    codeRecord.password = str_Password_Temp;
+                    codeRecord.remark = str_Remark_Temp;
+                    codeBook.book.put(str_Record_Temp, codeRecord);
+                    dataChanged = true;
+                }else {
+                    Toast.makeText(this, "Empty content", Toast.LENGTH_SHORT).show();
                 }
-                if(codeBook.book.get(str_Record_Temp) != null){
-                    codeBook.book.remove(str_Record_Temp);
-                }
-                Toast.makeText(this,"Record added", Toast.LENGTH_SHORT).show();
-                codeRecord = new CodeRecord();
-                codeRecord.account = str_Account_Temp;
-                codeRecord.password = str_Password_Temp;
-                codeRecord.remark = str_Remark_Temp;
-                codeBook.book.put(str_Record_Temp,codeRecord);
-                dataChanged = true;
                 break;
             }
             default:

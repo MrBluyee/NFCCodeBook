@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.mrbluyee.nfccodebook.R;
 import com.mrbluyee.nfccodebook.application.RandomGenerateHandle;
 import com.mrbluyee.nfccodebook.application.ReadFromTagHandle;
+import com.mrbluyee.nfccodebook.bean.StatusCode;
 import com.mrbluyee.nfccodebook.utils.ClipboardUtils;
 
 public class RandomPasswdActivity extends Activity implements View.OnClickListener {
@@ -88,7 +89,7 @@ public class RandomPasswdActivity extends Activity implements View.OnClickListen
             // TODO Auto-generated method stub
             super.handleMessage(msg);
             switch (msg.what) {
-                case 3: //是一张处理过的卡
+                case StatusCode.PASSWDCREATED:
                     textView_Generate_Result.setText((String)msg.obj);
                     break;
             }

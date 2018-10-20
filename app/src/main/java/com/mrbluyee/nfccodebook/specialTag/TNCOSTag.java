@@ -90,30 +90,21 @@ public class TNCOSTag extends IsoDepClass{
         return result;
     }
 
-    public boolean writeNDEFFile(byte[] datas, byte[] key) {
+    public boolean writeNDEFFileWithKey(byte[] datas, byte[] key) {
         boolean result = false;
         if(datas.length > getTagCapabilityLength()) return result;
         result = eraseNDEFFile(key);
         if(result) {
-            result = false;
-            try {
-                isoDep.connect();
-                if (isoDep.isConnected()) {
-                    if (selectNDEFFile()) {
-                        if (writeNDEFMessage(datas)) {
-                            result = writeFileLen(datas.length);
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                try {
-                    isoDep.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            result = writeNDEFFile(datas);
+        }
+        return result;
+    }
+
+    public boolean clearNDEFFileWithKey(byte[] key) {
+        boolean result;
+        result = eraseNDEFFile(key);
+        if(result) {
+            result = clearNDEFFile();
         }
         return result;
     }

@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import com.mrbluyee.nfccodebook.bean.StatusCode;
 import com.mrbluyee.nfccodebook.utils.ArrayUtils;
 import com.mrbluyee.nfccodebook.utils.ScreenUtils;
 import com.mrbluyee.nfccodebook.utils.StringUtils;
@@ -32,7 +33,7 @@ public class RandomGenerateHandle {
         public void run() {
             if(form_count>0 && length > 0) {
                 String str_temp = StringUtils.getRandomString(form_count, length);
-                Message message = Message.obtain(mReadHandler, 3, str_temp);
+                Message message = Message.obtain(mReadHandler, StatusCode.PASSWDCREATED, str_temp);
                 message.sendToTarget();
             }
         }

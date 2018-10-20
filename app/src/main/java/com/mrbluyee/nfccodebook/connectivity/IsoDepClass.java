@@ -10,6 +10,7 @@ import com.mrbluyee.nfccodebook.utils.StringUtils;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class IsoDepClass {
     private Tag mTag = null;
@@ -257,6 +258,27 @@ public class IsoDepClass {
         }
     }
 
+    public boolean clearNDEFBytes(int index,int length)throws IOException {
+        byte[] cmd1 = {0x00,(byte) 0xd6};
+        byte[] indexbyte = {(byte) (index >> 8 & 0xFF),(byte) (index & 0xFF)};
+        byte lengthbyte = (byte) length;
+        byte[] datas = new byte[length];
+        Arrays.fill(datas, (byte) 0);
+        byte[] cmd2 = ArrayUtils.MergerArray(cmd1,indexbyte);
+        byte[] cmd3 = ArrayUtils.MergerArray(cmd2,lengthbyte);
+        byte[] cmd4 = ArrayUtils.MergerArray(cmd3,datas);
+        byte[] ack = isoDep.transceive (cmd4);
+        if(ack.length >= 2) {
+            if (ack[0] == -0x70 && ack[1] == 0x00) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
     public byte[] readFileMessage(int index, int length)throws IOException {
         if(length == 0 || tagMaxReadLength == 0) return null;
         int times = length / tagMaxReadLength ;
@@ -295,6 +317,33 @@ public class IsoDepClass {
         n = in.read(temp);
         if(n >= 0){
             if(!writeNDEFBytes(index + times * this.tagMaxWriteLength, remain, temp)) result = false;
+        } else {
+            result = false;
+        }
+        return result;
+    }
+
+    public boolean clearNDEFMessage()throws IOException {
+        boolean result = true;
+        int index = 2;
+        int times = ccFileLength / this.tagMaxWriteLength;
+        int remain = ccFileLength % this.tagMaxWriteLength;
+        byte[] datas = new byte[ccFileLength];
+        Arrays.fill(datas, (byte) 0);
+        ByteArrayInputStream in = new ByteArrayInputStream(datas);
+        byte[] temp = new byte[this.tagMaxWriteLength];
+        int n = 0;
+        for(int i=0;i<times;i++){
+            n = in.read(temp);
+            if(n >= 0) {
+                if(!clearNDEFBytes(index + i * this.tagMaxWriteLength, this.tagMaxWriteLength)) result = false;
+            } else {
+                result = false;
+            }
+        }
+        n = in.read(temp);
+        if(n >= 0){
+            if(!clearNDEFBytes(index + times * this.tagMaxWriteLength, remain)) result = false;
         } else {
             result = false;
         }
@@ -358,6 +407,29 @@ public class IsoDepClass {
                 if(selectNDEFFile()) {
                     if(writeNDEFMessage(datas)){
                         result = writeFileLen(datas.length);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                isoDep.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    public boolean clearNDEFFile(){
+        boolean result = false;
+        try {
+            isoDep.connect();
+            if(isoDep.isConnected()) {
+                if(selectNDEFFile()) {
+                    if(clearNDEFMessage()){
+                        result = writeFileLen(0);
                     }
                 }
             }

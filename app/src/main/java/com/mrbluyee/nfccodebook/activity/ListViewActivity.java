@@ -2,6 +2,7 @@ package com.mrbluyee.nfccodebook.activity;
 
 import android.app.Activity;
 import android.app.PendingIntent;
+import android.app.VoiceInteractor;
 import android.content.Intent;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
@@ -10,6 +11,7 @@ import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -23,6 +25,8 @@ import com.mrbluyee.nfccodebook.application.WritetoTagHandle;
 import com.mrbluyee.nfccodebook.bean.CodeBook;
 import com.mrbluyee.nfccodebook.adapter.ListViewAdapter;
 import com.mrbluyee.nfccodebook.bean.CodeRecord;
+import com.mrbluyee.nfccodebook.bean.RequestCode;
+import com.mrbluyee.nfccodebook.bean.StatusCode;
 import com.mrbluyee.nfccodebook.utils.SerializableHashMap;
 
 import java.io.Serializable;
@@ -40,6 +44,7 @@ public class ListViewActivity extends Activity implements View.OnClickListener {
     private ImageButton button_Add_Record;
     private ImageButton button_Save_Record;
     private ImageButton button_Change_Key;
+    private ImageButton button_Delete_Account;
     private String passwd;
 
     @Override
@@ -67,6 +72,7 @@ public class ListViewActivity extends Activity implements View.OnClickListener {
         button_Add_Record = (ImageButton)findViewById(R.id.button_Add_Record);
         button_Save_Record = (ImageButton)findViewById(R.id.button_Save_Record);
         button_Change_Key = (ImageButton)findViewById(R.id.button_Change_Key);
+        button_Delete_Account = (ImageButton)findViewById(R.id.button_Delete_Account);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -78,12 +84,13 @@ public class ListViewActivity extends Activity implements View.OnClickListener {
                 bundle.putString("record",recordName);
                 bundle.putSerializable("map",myMap);
                 intent.putExtra("bundle",bundle);
-                startActivityForResult(intent,1);
+                startActivityForResult(intent, RequestCode.LISTCONTENTVIEW);
             }
         });
         button_Add_Record.setOnClickListener(this);
         button_Save_Record.setOnClickListener(this);
         button_Change_Key.setOnClickListener(this);
+        button_Delete_Account.setOnClickListener(this);
     }
 
     private void initData(){
@@ -122,15 +129,15 @@ public class ListViewActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1) { //ListContentViewActivity
-            if (resultCode == 2) {//数据有更新
+        if(requestCode == RequestCode.LISTCONTENTVIEW) { //ListContentViewActivity
+            if (resultCode == StatusCode.DATAUPDATED) {//数据有更新
                 Bundle bundle = data.getBundleExtra("bundle");
                 SerializableHashMap serializableHashMap = (SerializableHashMap) bundle.get("map");
                 this.codeBook = new CodeBook(serializableHashMap.getMap());
                 updateListView();
             }
-        }else if(requestCode == 2){ //ChangePasswdActivity
-            if (resultCode == 2) {//数据有更新
+        }else if(requestCode == RequestCode.CHANGEPASSWD){ //ChangePasswdActivity
+            if (resultCode == StatusCode.DATAUPDATED) {//数据有更新
                 Bundle bundle = data.getBundleExtra("bundle");
                 passwd =(String) bundle.get("newkey");
             }
@@ -172,7 +179,7 @@ public class ListViewActivity extends Activity implements View.OnClickListener {
                 Bundle bundle=new Bundle();
                 bundle.putSerializable("map",myMap);
                 intent.putExtra("bundle",bundle);
-                startActivityForResult(intent,1);
+                startActivityForResult(intent,RequestCode.LISTCONTENTVIEW);
                 break;
             }
             case R.id.button_Change_Key:{
@@ -180,15 +187,27 @@ public class ListViewActivity extends Activity implements View.OnClickListener {
                 Bundle bundle=new Bundle();
                 bundle.putString("key",passwd);
                 intent.putExtra("bundle",bundle);
-                startActivityForResult(intent,2);
+                startActivityForResult(intent, RequestCode.CHANGEPASSWD);
                 break;
             }
             case R.id.button_Save_Record:{
-                Intent intent = new Intent(ListViewActivity.this,WriteToTagActivity.class);
-                SerializableHashMap myMap = new SerializableHashMap();
-                myMap.setMap(codeBook.book);
+                if(!codeBook.book.isEmpty()) {
+                    Intent intent = new Intent(ListViewActivity.this, WriteToTagActivity.class);
+                    SerializableHashMap myMap = new SerializableHashMap();
+                    myMap.setMap(codeBook.book);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("map", myMap);
+                    bundle.putString("key", passwd);
+                    intent.putExtra("bundle", bundle);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(ListViewActivity.this,"Empty record",Toast.LENGTH_SHORT).show();
+                }
+                break;
+            }
+            case R.id.button_Delete_Account:{
+                Intent intent = new Intent(ListViewActivity.this,DeleteConfirmActivity.class);
                 Bundle bundle=new Bundle();
-                bundle.putSerializable("map",myMap);
                 bundle.putString("key",passwd);
                 intent.putExtra("bundle",bundle);
                 startActivity(intent);
@@ -197,5 +216,12 @@ public class ListViewActivity extends Activity implements View.OnClickListener {
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(ListViewActivity.this,MainActivity.class);
+        startActivity(intent);
+        super.onBackPressed();
     }
 }

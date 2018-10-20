@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.mrbluyee.nfccodebook.R;
 import com.mrbluyee.nfccodebook.application.ReadFromTagHandle;
+import com.mrbluyee.nfccodebook.bean.StatusCode;
 
 public class MainActivity extends Activity {
     protected static final String activityTAG = MainActivity.class.getName();
@@ -61,7 +62,7 @@ public class MainActivity extends Activity {
             Intent intent;
             Bundle bundle;
             switch (msg.what) {
-                case 1: //是一张处理过的卡
+                case StatusCode.USEDCARD: //是一张处理过的卡
                     intent = new Intent(MainActivity.this,DecodeActivity.class);
                     bundle = new Bundle();
                     bundle.putByteArray("tagID",mTag.getId());
@@ -69,7 +70,7 @@ public class MainActivity extends Activity {
                     intent.putExtra("bundle",bundle);
                     startActivity(intent);
                     break;
-                case 2: //卡未处理过
+                case StatusCode.EMPTYCARD: //卡未处理过
                     intent = new Intent(MainActivity.this,TagInfoActivity.class);
                     intent.putExtra("mtag",mTag);
                     startActivity(intent);
