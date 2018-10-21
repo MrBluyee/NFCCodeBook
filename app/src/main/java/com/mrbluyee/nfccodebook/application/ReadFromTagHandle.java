@@ -8,6 +8,8 @@ import android.util.Log;
 
 import com.mrbluyee.nfccodebook.bean.StatusCode;
 import com.mrbluyee.nfccodebook.connectivity.IsoDepClass;
+import com.mrbluyee.nfccodebook.connectivity.MifareClassicClass;
+import com.mrbluyee.nfccodebook.connectivity.MifareUltralightClass;
 import com.mrbluyee.nfccodebook.utils.AESUtils;
 import com.mrbluyee.nfccodebook.utils.ArrayUtils;
 import com.mrbluyee.nfccodebook.utils.GzipUtils;
@@ -54,6 +56,26 @@ public class ReadFromTagHandle {
                             }
                         }
                     }else{ //卡未处理过
+                        Message message = Message.obtain(mReadHandler, StatusCode.EMPTYCARD);
+                        message.sendToTarget();
+                    }
+                }else if(Arrays.asList(techList).contains("android.nfc.tech.MifareUltralight")){
+                    MifareUltralightClass mifareUltralightClass = new MifareUltralightClass(mTag);
+                    if(mifareUltralightClass.isHandledTagFlag()){
+                        byte[] data = mifareUltralightClass.readFile();
+                        Message message = Message.obtain(mReadHandler, StatusCode.USEDCARD, data);
+                        message.sendToTarget();
+                    }else{
+                        Message message = Message.obtain(mReadHandler, StatusCode.EMPTYCARD);
+                        message.sendToTarget();
+                    }
+                }else if(Arrays.asList(techList).contains("android.nfc.tech.MifareClassic")){
+                    MifareClassicClass mifareClassicClass = new MifareClassicClass(mTag);
+                    if(mifareClassicClass.isHandledTagFlag()){
+                        byte[] data = mifareClassicClass.readFile();
+                        Message message = Message.obtain(mReadHandler, StatusCode.USEDCARD, data);
+                        message.sendToTarget();
+                    }else{
                         Message message = Message.obtain(mReadHandler, StatusCode.EMPTYCARD);
                         message.sendToTarget();
                     }

@@ -2,6 +2,7 @@ package com.mrbluyee.nfccodebook.utils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.EOFException;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -38,7 +39,9 @@ public class GzipUtils {
             gzip.close();
             out.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            if(!(e instanceof EOFException)){
+                e.printStackTrace();
+            }
         }
         try {
             String result = out.toString("UTF-8");

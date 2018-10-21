@@ -19,6 +19,8 @@ import com.mrbluyee.nfccodebook.adapter.TagInfoAdapter;
 import com.mrbluyee.nfccodebook.adapter.TreeAdapter;
 import com.mrbluyee.nfccodebook.bean.TreeItem;
 import com.mrbluyee.nfccodebook.connectivity.IsoDepClass;
+import com.mrbluyee.nfccodebook.connectivity.MifareClassicClass;
+import com.mrbluyee.nfccodebook.connectivity.MifareUltralightClass;
 import com.mrbluyee.nfccodebook.utils.SerializableHashMap;
 import com.mrbluyee.nfccodebook.utils.StringUtils;
 
@@ -31,6 +33,8 @@ public class TagInfoActivity extends Activity {
     private Tag mTag;
     String[] techList;
     private IsoDepClass isoDepClass = null;
+    private MifareUltralightClass mifareUltralightClass = null;
+    private MifareClassicClass mifareClassicClass = null;
     private ListView taginfo_list_view;
     private ImageButton button_Create_CodeBook;
 
@@ -38,16 +42,22 @@ public class TagInfoActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tag_info_view);
+        initView();
         Intent intent = getIntent();
         mTag = intent.getParcelableExtra("mtag");
         if(mTag != null) {
             techList = mTag.getTechList();
             if (Arrays.asList(techList).contains("android.nfc.tech.IsoDep")) {
                 isoDepClass = new IsoDepClass(mTag);
+                initIsoDepData();
+            }else if(Arrays.asList(techList).contains("android.nfc.tech.MifareUltralight")){
+                mifareUltralightClass = new MifareUltralightClass(mTag);
+                initMifareUltralightData();
+            }else if(Arrays.asList(techList).contains("android.nfc.tech.MifareClassic")){
+                mifareClassicClass = new MifareClassicClass(mTag);
+                initMifareClassicData();
             }
         }
-        initView();
-        initData();
     }
 
     private void initView(){
@@ -63,7 +73,7 @@ public class TagInfoActivity extends Activity {
         );
     }
 
-    private void initData(){
+    private void initIsoDepData(){
         final List<TreeItem> list = new ArrayList<>();
         list.add(new TreeItem(0, 0, 0, true, "Tag ID"));
         list.add(new TreeItem(1, 0, 0, true, "Tech"));
@@ -83,6 +93,96 @@ public class TagInfoActivity extends Activity {
                 list.add(new TreeItem(11, 5, 1, true, "Read protected"));
             }
             if(isoDepClass.getWriteAccess() == 0x00){
+                list.add(new TreeItem(12, 6, 1, true, "Write free"));
+            }else{
+                list.add(new TreeItem(12, 6, 1, true, "Write protected"));
+            }
+            for(int i=0;i<techList.length;i++){
+                list.add(new TreeItem(13 + i, 1, 1, true, techList[i]));
+            }
+        }
+
+        final TagInfoAdapter adapter = new TagInfoAdapter(list,this);
+        adapter.setOnInnerItemClickListener(new TreeAdapter.OnInnerItemClickListener<TreeItem>() {
+            @Override
+            public void onClick(TreeItem node) {
+                Log.i(activityTAG , "click: " + node.name);
+            }
+        });
+        adapter.setOnInnerItemLongClickListener(new TreeAdapter.OnInnerItemLongClickListener<TreeItem>() {
+            @Override
+            public void onLongClick(TreeItem node) {
+                Log.i(activityTAG , "long click: " + node.name);
+            }
+        });
+        taginfo_list_view.setAdapter(adapter);
+    }
+
+    private void initMifareUltralightData(){
+        final List<TreeItem> list = new ArrayList<>();
+        list.add(new TreeItem(0, 0, 0, true, "Tag ID"));
+        list.add(new TreeItem(1, 0, 0, true, "Tech"));
+        list.add(new TreeItem(2, 0, 0, true, "Capability"));
+        list.add(new TreeItem(3, 0, 0, true, "MaxReadLength"));
+        list.add(new TreeItem(4, 0, 0, true, "MaxWriteLength"));
+        list.add(new TreeItem(5, 0, 0, true, "readAccess"));
+        list.add(new TreeItem(6, 0, 0, true, "writeAccess"));
+        list.add(new TreeItem(7, 0, 1, true, StringUtils.bytesToHexString(mTag.getId())));
+        if(mifareUltralightClass != null){
+            list.add(new TreeItem(8, 2, 1, true, ""+ mifareUltralightClass.getTagCapabilityLength() +"bytes"));
+            list.add(new TreeItem(9, 3, 1, true, ""+ mifareUltralightClass.getTagMaxTransceiveLength() +"bytes"));
+            list.add(new TreeItem(10, 4, 1, true, ""+ mifareUltralightClass.getTagMaxTransceiveLength() +"bytes"));
+            if(mifareUltralightClass.getReadAccess() == 0x00){
+                list.add(new TreeItem(11, 5, 1, true, "Read free"));
+            }else{
+                list.add(new TreeItem(11, 5, 1, true, "Read protected"));
+            }
+            if(mifareUltralightClass.getWriteAccess() == 0x00){
+                list.add(new TreeItem(12, 6, 1, true, "Write free"));
+            }else{
+                list.add(new TreeItem(12, 6, 1, true, "Write protected"));
+            }
+            for(int i=0;i<techList.length;i++){
+                list.add(new TreeItem(13 + i, 1, 1, true, techList[i]));
+            }
+        }
+
+        final TagInfoAdapter adapter = new TagInfoAdapter(list,this);
+        adapter.setOnInnerItemClickListener(new TreeAdapter.OnInnerItemClickListener<TreeItem>() {
+            @Override
+            public void onClick(TreeItem node) {
+                Log.i(activityTAG , "click: " + node.name);
+            }
+        });
+        adapter.setOnInnerItemLongClickListener(new TreeAdapter.OnInnerItemLongClickListener<TreeItem>() {
+            @Override
+            public void onLongClick(TreeItem node) {
+                Log.i(activityTAG , "long click: " + node.name);
+            }
+        });
+        taginfo_list_view.setAdapter(adapter);
+    }
+
+    private void initMifareClassicData(){
+        final List<TreeItem> list = new ArrayList<>();
+        list.add(new TreeItem(0, 0, 0, true, "Tag ID"));
+        list.add(new TreeItem(1, 0, 0, true, "Tech"));
+        list.add(new TreeItem(2, 0, 0, true, "Capability"));
+        list.add(new TreeItem(3, 0, 0, true, "MaxReadLength"));
+        list.add(new TreeItem(4, 0, 0, true, "MaxWriteLength"));
+        list.add(new TreeItem(5, 0, 0, true, "readAccess"));
+        list.add(new TreeItem(6, 0, 0, true, "writeAccess"));
+        list.add(new TreeItem(7, 0, 1, true, StringUtils.bytesToHexString(mTag.getId())));
+        if(mifareClassicClass != null){
+            list.add(new TreeItem(8, 2, 1, true, ""+ mifareClassicClass.getTagCapabilityLength() +"bytes"));
+            list.add(new TreeItem(9, 3, 1, true, ""+ mifareClassicClass.getTagMaxTransceiveLength() +"bytes"));
+            list.add(new TreeItem(10, 4, 1, true, ""+ mifareClassicClass.getTagMaxTransceiveLength() +"bytes"));
+            if(mifareClassicClass.getReadAccess() == 0x00){
+                list.add(new TreeItem(11, 5, 1, true, "Read free"));
+            }else{
+                list.add(new TreeItem(11, 5, 1, true, "Read protected"));
+            }
+            if(mifareClassicClass.getWriteAccess() == 0x00){
                 list.add(new TreeItem(12, 6, 1, true, "Write free"));
             }else{
                 list.add(new TreeItem(12, 6, 1, true, "Write protected"));
