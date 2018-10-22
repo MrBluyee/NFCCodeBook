@@ -3,6 +3,7 @@ package com.mrbluyee.nfccodebook.application;
 import android.nfc.Tag;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 import com.mrbluyee.nfccodebook.bean.StatusCode;
 import com.mrbluyee.nfccodebook.connectivity.IsoDepClass;
@@ -12,6 +13,7 @@ import com.mrbluyee.nfccodebook.specialTag.TNCOSTag;
 import com.mrbluyee.nfccodebook.utils.AESUtils;
 import com.mrbluyee.nfccodebook.utils.ArrayUtils;
 import com.mrbluyee.nfccodebook.utils.GzipUtils;
+import com.mrbluyee.nfccodebook.utils.StringUtils;
 
 import java.util.Arrays;
 

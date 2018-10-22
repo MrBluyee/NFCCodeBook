@@ -44,6 +44,7 @@ public class ReadFromTagHandle {
                 if (Arrays.asList(techList).contains("android.nfc.tech.IsoDep")) {
                     IsoDepClass isoDepClass = new IsoDepClass(mTag);
                     byte[] temp = isoDepClass.readNDEFFile();
+                    Log.i("IsoDepClass" , "read file:" + StringUtils.bytesToHexString(temp));
                     if(temp != null) {
                         byte[] head = ArrayUtils.SubArray(temp, 0, tagID.length);
                         if (mReadHandler != null) {

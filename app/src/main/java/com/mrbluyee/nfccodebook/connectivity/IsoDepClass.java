@@ -9,6 +9,7 @@ import com.mrbluyee.nfccodebook.utils.StringUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.EOFException;
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -301,24 +302,13 @@ public class IsoDepClass {
     public boolean writeNDEFMessage(byte[] datas)throws IOException {
         boolean result = true;
         int index = 2;
-        int times = datas.length / this.tagMaxWriteLength;
-        int remain = datas.length % this.tagMaxWriteLength;
         ByteArrayInputStream in = new ByteArrayInputStream(datas);
         byte[] temp = new byte[this.tagMaxWriteLength];
         int n = 0;
-        for(int i=0;i<times;i++){
-            n = in.read(temp);
-            if(n >= 0) {
-                if(!writeNDEFBytes(index + i * this.tagMaxWriteLength, this.tagMaxWriteLength, temp)) result = false;
-            } else {
-                result = false;
-            }
-        }
-        n = in.read(temp);
-        if(n >= 0){
-            if(!writeNDEFBytes(index + times * this.tagMaxWriteLength, remain, temp)) result = false;
-        } else {
-            result = false;
+        while((n = in.read(temp)) > 0) {
+            result = writeNDEFBytes(index, n, temp);
+            if(result == false) break;
+            index += n;
         }
         return result;
     }
@@ -326,26 +316,15 @@ public class IsoDepClass {
     public boolean clearNDEFMessage()throws IOException {
         boolean result = true;
         int index = 2;
-        int times = ccFileLength / this.tagMaxWriteLength;
-        int remain = ccFileLength % this.tagMaxWriteLength;
         byte[] datas = new byte[ccFileLength];
         Arrays.fill(datas, (byte) 0);
         ByteArrayInputStream in = new ByteArrayInputStream(datas);
         byte[] temp = new byte[this.tagMaxWriteLength];
         int n = 0;
-        for(int i=0;i<times;i++){
-            n = in.read(temp);
-            if(n >= 0) {
-                if(!clearNDEFBytes(index + i * this.tagMaxWriteLength, this.tagMaxWriteLength)) result = false;
-            } else {
-                result = false;
-            }
-        }
-        n = in.read(temp);
-        if(n >= 0){
-            if(!clearNDEFBytes(index + times * this.tagMaxWriteLength, remain)) result = false;
-        } else {
-            result = false;
+        while((n = in.read(temp)) > 0) {
+            result = clearNDEFBytes(index, n);
+            if(result == false) break;
+            index += n;
         }
         return result;
     }
@@ -411,7 +390,9 @@ public class IsoDepClass {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            if(!(e instanceof EOFException)){
+                e.printStackTrace();
+            }
         }finally {
             try {
                 isoDep.close();
@@ -434,7 +415,9 @@ public class IsoDepClass {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            if(!(e instanceof EOFException)){
+                e.printStackTrace();
+            }
         }finally {
             try {
                 isoDep.close();
