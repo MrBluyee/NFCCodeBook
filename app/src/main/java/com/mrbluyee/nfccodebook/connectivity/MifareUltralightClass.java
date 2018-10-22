@@ -115,7 +115,7 @@ public class MifareUltralightClass {
             if(Arrays.equals(fileFlagCheck, getId())){
                 isHandledTagFlag = true;
                 byte[] fileLengthByte = ArrayUtils.SubArray(result,0,2);
-                fileLength = (fileLengthByte [0] & 0xff) * 0xff + (fileLengthByte [1] & 0xff);
+                fileLength = (fileLengthByte [0] & 0xff) * 256 + (fileLengthByte [1] & 0xff);
             }else {
                 isHandledTagFlag = false;
                 fileLength = 0;
