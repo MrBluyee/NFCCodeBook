@@ -26,7 +26,10 @@ public class ChangePasswdActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.change_passwd_view);
         initView();
-        Bundle bundle = getIntent().getBundleExtra("bundle");
+        Intent intent = getIntent();
+        intent.getComponent().getPackageName().toString();
+
+        Bundle bundle = intent.getBundleExtra("bundle");
         oldPasswd = bundle.getString("key");
     }
     private void initView(){
@@ -61,6 +64,7 @@ public class ChangePasswdActivity extends Activity {
     @Override
     public void onBackPressed() {
         Intent intent = new Intent();
+        intent.setPackage(getPackageName());
         if(newPasswd != null){
             Bundle bundle=new Bundle();
             bundle.putString("newkey",newPasswd);

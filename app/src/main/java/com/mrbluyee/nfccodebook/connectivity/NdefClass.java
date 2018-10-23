@@ -8,12 +8,15 @@ import android.nfc.NdefRecord;
 import android.nfc.Tag;
 import android.support.v7.app.AppCompatActivity;
 
+import com.mrbluyee.nfccodebook.BuildConfig;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Locale;
 
 public class NdefClass{
+    private static final boolean isDebug = BuildConfig.DEBUG;
     private Tag mTag = null;
 
     public NdefClass(Tag mTag){
@@ -78,8 +81,11 @@ public class NdefClass{
                     payload.length - languageCodeLength - 1, textEncoding);
             return textRecord;
         } catch (Exception e) {
-            throw new IllegalArgumentException();
+            if (isDebug) {
+                e.printStackTrace();
+            }
         }
+        return null;
     }
 
     public int writeNdef(byte[] datas){
@@ -100,14 +106,20 @@ public class NdefClass{
             ndef.connect();//连接
             ndef.writeNdefMessage(ndefMessage);//写数据
         } catch (IOException e) {
-            e.printStackTrace();
+            if (isDebug) {
+                e.printStackTrace();
+            }
         } catch (FormatException e) {
-            e.printStackTrace();
+            if (isDebug) {
+                e.printStackTrace();
+            }
         }finally {
             try {
                 ndef.close();//关闭连接
             } catch (IOException e) {
-                e.printStackTrace();
+                if (isDebug) {
+                    e.printStackTrace();
+                }
             }
         }
         return 0;
@@ -126,14 +138,20 @@ public class NdefClass{
                 result = parseTextRecord(ndefMessage.getRecords()[0]);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            if (isDebug) {
+                e.printStackTrace();
+            }
         } catch (FormatException e) {
-            e.printStackTrace();
+            if (isDebug) {
+                e.printStackTrace();
+            }
         }finally {
             try {
                 ndef.close();//关闭链接
             } catch (IOException e) {
-                e.printStackTrace();
+                if (isDebug) {
+                    e.printStackTrace();
+                }
             }
         }
         return result;

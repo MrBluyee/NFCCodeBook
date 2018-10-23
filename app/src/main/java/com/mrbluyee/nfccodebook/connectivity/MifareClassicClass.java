@@ -8,6 +8,7 @@ import android.nfc.NdefRecord;
 import android.nfc.Tag;
 import android.support.v7.app.AppCompatActivity;
 
+import com.mrbluyee.nfccodebook.BuildConfig;
 import com.mrbluyee.nfccodebook.utils.ArrayUtils;
 
 import java.io.ByteArrayInputStream;
@@ -19,6 +20,7 @@ import java.util.Arrays;
 import java.util.Locale;
 
 public class MifareClassicClass{
+    private static final boolean isDebug = BuildConfig.DEBUG;
     private Tag mTag = null;
     private MifareClassic mfc = null;
     private byte[] tag_id;
@@ -57,12 +59,16 @@ public class MifareClassicClass{
                         getFileMessage();
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    if (isDebug) {
+                        e.printStackTrace();
+                    }
                 }finally {
                     try {
                         mfc.close();
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        if (isDebug) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
@@ -269,12 +275,16 @@ public class MifareClassicClass{
                         }
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    if (isDebug) {
+                        e.printStackTrace();
+                    }
                 } finally {
                     try {
                         mfc.close();
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        if (isDebug) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
@@ -290,14 +300,18 @@ public class MifareClassicClass{
                 status = writeBytes(datas);
             }
         } catch (Exception e) {
-            if(!(e instanceof EOFException)){
-                e.printStackTrace();
+            if (isDebug) {
+                if(!(e instanceof EOFException)){
+                    e.printStackTrace();
+                }
             }
         } finally {
             try {
                 mfc.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                if (isDebug) {
+                    e.printStackTrace();
+                }
             }
         }
         return status;
@@ -322,14 +336,18 @@ public class MifareClassicClass{
                 }while (file_remain > 0);
             }
         } catch (Exception e) {
-            if(!(e instanceof EOFException)){
-                e.printStackTrace();
+            if (isDebug) {
+                if(!(e instanceof EOFException)){
+                    e.printStackTrace();
+                }
             }
         } finally {
             try {
                 mfc.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                if (isDebug) {
+                    e.printStackTrace();
+                }
             }
         }
         return status;

@@ -1,5 +1,7 @@
 package com.mrbluyee.nfccodebook.utils;
 
+import com.mrbluyee.nfccodebook.BuildConfig;
+
 import java.security.MessageDigest;
 import java.security.SecureRandom;
 
@@ -10,6 +12,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 public class AESUtils {
+    private static final boolean isDebug = BuildConfig.DEBUG;
     private static final String CipherMode = "AES/CFB/NoPadding";//使用CFB加密，需要设置IV
 
     public static byte[] encrypt(byte[] content,String keyString) {
@@ -23,7 +26,9 @@ public class AESUtils {
             byte[] encrypted = cipher.doFinal(content);
             return encrypted;
         } catch (Exception e) {
-            e.printStackTrace();
+            if (isDebug) {
+                e.printStackTrace();
+            }
         }
         return null;
     }
@@ -39,7 +44,9 @@ public class AESUtils {
             byte[] original = cipher.doFinal(content);
             return original;
         } catch (Exception e) {
-            e.printStackTrace();
+            if (isDebug) {
+                e.printStackTrace();
+            }
         }
         return null;
     }

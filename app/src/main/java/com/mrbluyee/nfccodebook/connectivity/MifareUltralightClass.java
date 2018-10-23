@@ -3,6 +3,7 @@ package com.mrbluyee.nfccodebook.connectivity;
 import android.nfc.Tag;
 import android.nfc.tech.MifareUltralight;
 
+import com.mrbluyee.nfccodebook.BuildConfig;
 import com.mrbluyee.nfccodebook.utils.ArrayUtils;
 
 import java.io.ByteArrayInputStream;
@@ -12,6 +13,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class MifareUltralightClass {
+    private static final boolean isDebug = BuildConfig.DEBUG;
     private Tag mTag = null;
     private MifareUltralight mfu;
     private int tagMaxTransceiveLength = 0;
@@ -36,12 +38,16 @@ public class MifareUltralightClass {
                         getFileMessage();
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    if (isDebug) {
+                        e.printStackTrace();
+                    }
                 }finally {
                     try {
                         mfu.close();
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        if (isDebug) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
@@ -192,12 +198,16 @@ public class MifareUltralightClass {
                         }
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    if (isDebug) {
+                        e.printStackTrace();
+                    }
                 } finally {
                     try {
                         mfu.close();
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        if (isDebug) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
@@ -213,14 +223,18 @@ public class MifareUltralightClass {
                 status = writedatas(datas);
             }
         } catch (Exception e) {
-            if(!(e instanceof EOFException)){
-                e.printStackTrace();
+            if (isDebug) {
+                if(!(e instanceof EOFException)){
+                    e.printStackTrace();
+                }
             }
         } finally {
             try {
                 mfu.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                if (isDebug) {
+                    e.printStackTrace();
+                }
             }
         }
         return status;
@@ -234,14 +248,18 @@ public class MifareUltralightClass {
                 status = clearDatas();
             }
         } catch (Exception e) {
-            if(!(e instanceof EOFException)){
-                e.printStackTrace();
+            if (isDebug) {
+                if(!(e instanceof EOFException)){
+                    e.printStackTrace();
+                }
             }
         } finally {
             try {
                 mfu.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                if (isDebug) {
+                    e.printStackTrace();
+                }
             }
         }
         return status;

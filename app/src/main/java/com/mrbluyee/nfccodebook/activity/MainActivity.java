@@ -64,6 +64,7 @@ public class MainActivity extends Activity {
             switch (msg.what) {
                 case StatusCode.USEDCARD: //是一张处理过的卡
                     intent = new Intent(MainActivity.this,DecodeActivity.class);
+                    intent.setPackage(getPackageName());
                     bundle = new Bundle();
                     bundle.putByteArray("tagID",mTag.getId());
                     bundle.putByteArray("tagContent",(byte[]) msg.obj);
@@ -72,6 +73,7 @@ public class MainActivity extends Activity {
                     break;
                 case StatusCode.EMPTYCARD: //卡未处理过
                     intent = new Intent(MainActivity.this,TagInfoActivity.class);
+                    intent.setPackage(getPackageName());
                     intent.putExtra("mtag",mTag);
                     startActivity(intent);
                     break;

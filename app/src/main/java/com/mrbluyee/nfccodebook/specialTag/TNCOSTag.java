@@ -3,12 +3,14 @@ package com.mrbluyee.nfccodebook.specialTag;
 import android.nfc.Tag;
 import android.nfc.tech.IsoDep;
 
+import com.mrbluyee.nfccodebook.BuildConfig;
 import com.mrbluyee.nfccodebook.connectivity.IsoDepClass;
 import com.mrbluyee.nfccodebook.utils.ArrayUtils;
 
 import java.io.IOException;
 
 public class TNCOSTag extends IsoDepClass{
+    private static final boolean isDebug = BuildConfig.DEBUG;
     private Tag mTag = null;
     private IsoDep isoDep = null;
     public byte[] defaultKey = {0x40,0x41,0x42,0x43,0x44,0x45,0x46,0x47};
@@ -58,12 +60,16 @@ public class TNCOSTag extends IsoDepClass{
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            if (isDebug) {
+                e.printStackTrace();
+            }
         }finally {
             try {
                 isoDep.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                if (isDebug) {
+                    e.printStackTrace();
+                }
             }
         }
         return result;
@@ -79,12 +85,16 @@ public class TNCOSTag extends IsoDepClass{
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            if (isDebug) {
+                e.printStackTrace();
+            }
         }finally {
             try {
                 isoDep.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                if (isDebug) {
+                    e.printStackTrace();
+                }
             }
         }
         return result;

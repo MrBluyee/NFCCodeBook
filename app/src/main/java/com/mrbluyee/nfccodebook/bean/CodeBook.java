@@ -1,5 +1,7 @@
 package com.mrbluyee.nfccodebook.bean;
 
+import com.mrbluyee.nfccodebook.BuildConfig;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -9,6 +11,7 @@ import java.util.Map;
 
 public class CodeBook{
     public HashMap<String,CodeRecord> book = null;
+    private static final boolean isDebug = BuildConfig.DEBUG;
 
     public CodeBook(String data){
         this.book = new HashMap<String,CodeRecord>();
@@ -28,7 +31,9 @@ public class CodeBook{
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            if (isDebug) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -70,7 +75,9 @@ public class CodeBook{
                 dataTemp.put(jsonObject);
             }
         }catch (Exception e) {
-            e.printStackTrace();
+            if (isDebug) {
+                e.printStackTrace();
+            }
         }
         return dataTemp.toString();
     }

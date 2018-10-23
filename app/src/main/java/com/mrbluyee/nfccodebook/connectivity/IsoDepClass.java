@@ -4,6 +4,7 @@ import android.nfc.Tag;
 import android.nfc.tech.IsoDep;
 import android.util.Log;
 
+import com.mrbluyee.nfccodebook.BuildConfig;
 import com.mrbluyee.nfccodebook.utils.ArrayUtils;
 import com.mrbluyee.nfccodebook.utils.StringUtils;
 
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class IsoDepClass {
+    private static final boolean isDebug = BuildConfig.DEBUG;
     private Tag mTag = null;
     private IsoDep isoDep = null;
     private int tagCapabilityLength = 0;
@@ -41,12 +43,16 @@ public class IsoDepClass {
                         }
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    if (isDebug) {
+                        e.printStackTrace();
+                    }
                 }finally {
                     try {
                         isoDep.close();
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        if (isDebug) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
@@ -345,12 +351,16 @@ public class IsoDepClass {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            if (isDebug) {
+                e.printStackTrace();
+            }
         }finally {
             try {
                 isoDep.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                if (isDebug) {
+                    e.printStackTrace();
+                }
             }
         }
         return result;
@@ -369,14 +379,18 @@ public class IsoDepClass {
                 }
             }
         } catch (Exception e) {
-            if(!(e instanceof EOFException)){
-                e.printStackTrace();
+            if (isDebug) {
+                if(!(e instanceof EOFException)){
+                    e.printStackTrace();
+                }
             }
         }finally {
             try {
                 isoDep.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                if (isDebug) {
+                    e.printStackTrace();
+                }
             }
         }
         return result;
@@ -394,14 +408,18 @@ public class IsoDepClass {
                 }
             }
         } catch (Exception e) {
-            if(!(e instanceof EOFException)){
-                e.printStackTrace();
+            if (isDebug) {
+                if(!(e instanceof EOFException)){
+                    e.printStackTrace();
+                }
             }
         }finally {
             try {
                 isoDep.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                if (isDebug) {
+                    e.printStackTrace();
+                }
             }
         }
         return result;

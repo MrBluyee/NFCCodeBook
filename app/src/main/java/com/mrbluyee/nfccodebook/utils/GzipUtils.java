@@ -1,5 +1,7 @@
 package com.mrbluyee.nfccodebook.utils;
 
+import com.mrbluyee.nfccodebook.BuildConfig;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.EOFException;
@@ -7,6 +9,8 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 public class GzipUtils {
+    private static final boolean isDebug = BuildConfig.DEBUG;
+
     public static byte[] compress(String str){
         if (null == str || str.length() <= 0) {
             return null;
@@ -18,7 +22,9 @@ public class GzipUtils {
             gzip.close();
             return out.toByteArray();
         } catch (Exception e) {
-            e.printStackTrace();
+            if (isDebug) {
+                e.printStackTrace();
+            }
         }
         return null;
     }
@@ -39,15 +45,19 @@ public class GzipUtils {
             gzip.close();
             out.close();
         } catch (Exception e) {
-            if(!(e instanceof EOFException)){
-                e.printStackTrace();
+            if (isDebug) {
+                if(!(e instanceof EOFException)){
+                    e.printStackTrace();
+                }
             }
         }
         try {
             String result = out.toString("UTF-8");
             return result;
         }catch (Exception e) {
-            e.printStackTrace();
+            if (isDebug) {
+                e.printStackTrace();
+            }
         }
         return null;
     }
