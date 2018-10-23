@@ -44,7 +44,12 @@ public class TagInfoActivity extends Activity {
         setContentView(R.layout.tag_info_view);
         initView();
         Intent intent = getIntent();
-        mTag = intent.getParcelableExtra("mtag");
+        String packagename = intent.getPackage().toString();
+        if(packagename.equals(getPackageName())) {
+            mTag = intent.getParcelableExtra("mtag");
+        }else{
+            finish();
+        }
         if(mTag != null) {
             techList = mTag.getTechList();
             if (Arrays.asList(techList).contains("android.nfc.tech.IsoDep")) {
@@ -67,6 +72,7 @@ public class TagInfoActivity extends Activity {
               @Override
               public void onClick(View v) {
                   Intent intent = new Intent(TagInfoActivity.this, CreatePasswdActivity.class);
+                  intent.setPackage(getPackageName());
                   startActivity(intent);
               }
             }

@@ -38,17 +38,23 @@ public class WriteToTagActivity extends Activity {
         setContentView(R.layout.write_to_tag_view);
         initView();
         myHandler = new MyHandler(WriteToTagActivity.this);
-        Bundle bundle = getIntent().getBundleExtra("bundle");
-        if(bundle != null) {
-            SerializableHashMap serializableHashMap = (SerializableHashMap) bundle.get("map");
-            if (serializableHashMap != null) {
-                passwd = (String) bundle.get("key");
-                codeBook = new CodeBook(serializableHashMap.getMap());
+        Intent intent = getIntent();
+        String packagename = intent.getPackage().toString();
+        if(packagename.equals(getPackageName())) {
+            Bundle bundle = getIntent().getBundleExtra("bundle");
+            if (bundle != null) {
+                SerializableHashMap serializableHashMap = (SerializableHashMap) bundle.get("map");
+                if (serializableHashMap != null) {
+                    passwd = (String) bundle.get("key");
+                    codeBook = new CodeBook(serializableHashMap.getMap());
+                }
+                Boolean clear_tag = (boolean) bundle.getBoolean("cleartag");
+                if (clear_tag != null) {
+                    clearTagFlag = clear_tag;
+                }
             }
-            Boolean clear_tag = (boolean)bundle.getBoolean("cleartag");
-            if(clear_tag != null){
-                clearTagFlag = clear_tag;
-            }
+        }else{
+            finish();
         }
     }
 
@@ -135,11 +141,13 @@ public class WriteToTagActivity extends Activity {
                 case StatusCode.CLEARTAGSUCCEED: //清除成功
                     Toast.makeText(context,"Clear Successed", Toast.LENGTH_SHORT).show();
                     intent = new Intent();
+                    intent.setPackage(getPackageName());
                     setResult(StatusCode.CLEARTAGSUCCEED, intent);//清除成功
                     break;
                 case StatusCode.CLEARTAGFAILED: //清除失败
                     Toast.makeText(context,"Clear Failed", Toast.LENGTH_SHORT).show();
                     intent = new Intent();
+                    intent.setPackage(getPackageName());
                     setResult(StatusCode.CLEARTAGFAILED, intent);//清除失败
                     break;
             }

@@ -46,6 +46,11 @@ public class RandomPasswdActivity extends Activity implements View.OnClickListen
         clipboardUtils = new ClipboardUtils(this);
         myHandler = new MyHandler();
         initView();
+        Intent intent = getIntent();
+        String packagename = intent.getPackage().toString();
+        if(!packagename.equals(getPackageName())) {
+            finish();
+        }
     }
 
     private void initView(){

@@ -25,9 +25,15 @@ public class DeleteConfirmActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.delete_confirm_view);
         initView();
-        Bundle bundle = getIntent().getBundleExtra("bundle");
-        if(bundle != null){
-            passwd = (String) bundle.get("key");
+        Intent intent = getIntent();
+        String packagename = intent.getPackage().toString();
+        if(packagename.equals(getPackageName())) {
+            Bundle bundle = getIntent().getBundleExtra("bundle");
+            if (bundle != null) {
+                passwd = (String) bundle.get("key");
+            }
+        }else{
+            finish();
         }
     }
 
@@ -41,6 +47,7 @@ public class DeleteConfirmActivity extends Activity {
                 if(!passwd_check.equals("")){
                     if(passwd_check.equals(passwd)){
                         Intent intent = new Intent(DeleteConfirmActivity.this,WriteToTagActivity.class);
+                        intent.setPackage(getPackageName());
                         Bundle bundle=new Bundle();
                         bundle.putBoolean("cleartag",true);
                         intent.putExtra("bundle",bundle);
@@ -78,13 +85,19 @@ public class DeleteConfirmActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == RequestCode.WRITETOTAG) {
-            if (resultCode == StatusCode.CLEARTAGSUCCEED) {
-                Intent intent = new Intent(DeleteConfirmActivity.this,MainActivity.class);
-                startActivity(intent);
-            }else if(resultCode == StatusCode.CLEARTAGFAILED){
-                finish();
+        String packagename = data.getPackage().toString();
+        if(packagename.equals(getPackageName())) {
+            if (requestCode == RequestCode.WRITETOTAG) {
+                if (resultCode == StatusCode.CLEARTAGSUCCEED) {
+                    Intent intent = new Intent(DeleteConfirmActivity.this, MainActivity.class);
+                    intent.setPackage(getPackageName());
+                    startActivity(intent);
+                } else if (resultCode == StatusCode.CLEARTAGFAILED) {
+                    finish();
+                }
             }
+        }else{
+            finish();
         }
     }
 }

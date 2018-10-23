@@ -65,12 +65,26 @@
         android:textSize="5dp"
         android:text="" />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#505050"
-        android:textSize="20dp"
-        android:text="Record List:" />
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#505050"
+            android:textSize="20dp"
+            android:text="Record count:" />
+
+        <TextView
+            android:id="@+id/list_Record_Count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#505050"
+            android:textSize="20dp"
+            android:text="0" />
+    </LinearLayout>
 
     <ListView
         android:id="@+id/list_view"

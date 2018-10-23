@@ -85,13 +85,23 @@ public class ListContentViewActivity extends Activity implements View.OnClickLis
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_content_view);
-        initView();
         clipboardUtils = new ClipboardUtils(this);
         notificationUtils = new NotificationUtils(this);
-        Bundle bundle = getIntent().getBundleExtra("bundle");
-        SerializableHashMap serializableHashMap = (SerializableHashMap) bundle.get("map");
-        codeBook = new CodeBook(serializableHashMap.getMap());
-        recordName = bundle.getString("record");
+        initView();
+        Intent intent = getIntent();
+        String packagename = intent.getPackage().toString();
+        if(packagename.equals(getPackageName())) {
+            Bundle bundle = intent.getBundleExtra("bundle");
+            if(bundle != null) {
+                SerializableHashMap serializableHashMap = (SerializableHashMap) bundle.get("map");
+                recordName = bundle.getString("record");
+                if(serializableHashMap != null) {
+                    codeBook = new CodeBook(serializableHashMap.getMap());
+                }
+            }
+        }else{
+            finish();
+        }
         if(recordName != null) {
             codeRecord = codeBook.book.get(recordName);
             editText_Record.setText(recordName);
@@ -175,6 +185,7 @@ public class ListContentViewActivity extends Activity implements View.OnClickLis
     @Override
     public void onBackPressed() {
         Intent intent = new Intent();
+        intent.setPackage(getPackageName());
         if(dataChanged){
             SerializableHashMap myMap = new SerializableHashMap();
             myMap.setMap(codeBook.book);
@@ -409,6 +420,7 @@ public class ListContentViewActivity extends Activity implements View.OnClickLis
             }
             case R.id.button_Record_Random:{
                 Intent intent = new Intent(ListContentViewActivity.this,RandomPasswdActivity.class);
+                intent.setPackage(getPackageName());
                 startActivity(intent);
                 break;
             }

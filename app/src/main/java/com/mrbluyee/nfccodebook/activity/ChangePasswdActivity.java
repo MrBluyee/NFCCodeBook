@@ -27,10 +27,15 @@ public class ChangePasswdActivity extends Activity {
         setContentView(R.layout.change_passwd_view);
         initView();
         Intent intent = getIntent();
-        intent.getComponent().getPackageName().toString();
-
-        Bundle bundle = intent.getBundleExtra("bundle");
-        oldPasswd = bundle.getString("key");
+        String packagename = intent.getPackage().toString();
+        if(packagename.equals(getPackageName())) {
+            Bundle bundle = intent.getBundleExtra("bundle");
+            if(bundle != null) {
+                oldPasswd = bundle.getString("key");
+            }
+        }else{
+            finish();
+        }
     }
     private void initView(){
         editText_Check_old_Passwd = (EditText)findViewById(R.id.editText_Check_old_Passwd);

@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mrbluyee.nfccodebook.R;
@@ -46,24 +47,30 @@ public class ListViewActivity extends Activity implements View.OnClickListener {
     private ImageButton button_Save_Record;
     private ImageButton button_Change_Key;
     private ImageButton button_Delete_Account;
+    private TextView list_Record_Count;
     private String passwd;
+    private int record_count = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_view);
         initView();
-        Bundle bundle = getIntent().getBundleExtra("bundle");
-        if(bundle != null) {
-            SerializableHashMap serializableHashMap = (SerializableHashMap) bundle.get("map");
-            if(serializableHashMap != null) {
-                passwd = (String)bundle.get("key");
-                codeBook = new CodeBook(serializableHashMap.getMap());
-                initData();
-            }else{
-                passwd = (String)bundle.get("newkey");
-                HashMap<String,CodeRecord> temp = new HashMap<String,CodeRecord>();
-                codeBook = new CodeBook(temp);
+        Intent intent = getIntent();
+        String packagename = intent.getPackage().toString();
+        if(packagename.equals(getPackageName())) {
+            Bundle bundle = intent.getBundleExtra("bundle");
+            if (bundle != null) {
+                SerializableHashMap serializableHashMap = (SerializableHashMap) bundle.get("map");
+                if (serializableHashMap != null) {
+                    passwd = (String) bundle.get("key");
+                    codeBook = new CodeBook(serializableHashMap.getMap());
+                    updateListView();
+                } else {
+                    passwd = (String) bundle.get("newkey");
+                    HashMap<String, CodeRecord> temp = new HashMap<String, CodeRecord>();
+                    codeBook = new CodeBook(temp);
+                }
             }
         }
     }
@@ -74,10 +81,12 @@ public class ListViewActivity extends Activity implements View.OnClickListener {
         button_Save_Record = (ImageButton)findViewById(R.id.button_Save_Record);
         button_Change_Key = (ImageButton)findViewById(R.id.button_Change_Key);
         button_Delete_Account = (ImageButton)findViewById(R.id.button_Delete_Account);
+        list_Record_Count = (TextView)findViewById(R.id.list_Record_Count);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(ListViewActivity.this,ListContentViewActivity.class);
+                intent.setPackage(getPackageName());
                 String recordName = (String) listViewAdapter.getItem(position);
                 SerializableHashMap myMap = new SerializableHashMap();
                 myMap.setMap(codeBook.book);
@@ -94,59 +103,53 @@ public class ListViewActivity extends Activity implements View.OnClickListener {
         button_Delete_Account.setOnClickListener(this);
     }
 
-    private void initData(){
+    private void updateListView(){
         ListViewActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                recordList.clear();
                 if (codeBook != null) {
+                    record_count = 0;
                     Iterator<Map.Entry<String, CodeRecord>> iterator = ListViewActivity.this.codeBook.book.entrySet().iterator();
                     while (iterator.hasNext()) {
                         Map.Entry<String, CodeRecord> entry = iterator.next();
                         String key = entry.getKey();
                         recordList.add(key);
+                        record_count ++;
                     }
                 }
-                listViewAdapter = new ListViewAdapter(ListViewActivity.this, recordList);
-                listView.setAdapter(listViewAdapter);
-                listView.setSelection(0);
+                if (listViewAdapter != null) {
+                    listViewAdapter.notifyDataSetChanged();
+                } else {
+                    listViewAdapter = new ListViewAdapter(ListViewActivity.this, recordList);
+                    listView.setAdapter(listViewAdapter);
+                    listView.setSelection(0);
+                }
+                list_Record_Count.setText("" + record_count);
             }
         });
-    }
-
-    private void updateListView(){
-        recordList.clear();
-        if(codeBook != null) {
-            Iterator<Map.Entry<String, CodeRecord>> iterator = this.codeBook.book.entrySet().iterator();
-            while (iterator.hasNext()) {
-                Map.Entry<String, CodeRecord> entry = iterator.next();
-                String key = entry.getKey();
-                recordList.add(key);
-            }
-        }
-        if(listViewAdapter != null){
-            listViewAdapter.notifyDataSetChanged();
-        }else{
-            listViewAdapter = new ListViewAdapter(this,recordList);
-            listView.setAdapter(listViewAdapter);
-            listView.setSelection(0);
-        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == RequestCode.LISTCONTENTVIEW) { //ListContentViewActivity
-            if (resultCode == StatusCode.DATAUPDATED) {//数据有更新
-                Bundle bundle = data.getBundleExtra("bundle");
-                SerializableHashMap serializableHashMap = (SerializableHashMap) bundle.get("map");
-                this.codeBook = new CodeBook(serializableHashMap.getMap());
-                updateListView();
+        String packagename = data.getPackage().toString();
+        if(packagename.equals(getPackageName())) {
+            if (requestCode == RequestCode.LISTCONTENTVIEW) { //ListContentViewActivity
+                if (resultCode == StatusCode.DATAUPDATED) {//数据有更新
+                    Bundle bundle = data.getBundleExtra("bundle");
+                    SerializableHashMap serializableHashMap = (SerializableHashMap) bundle.get("map");
+                    this.codeBook = new CodeBook(serializableHashMap.getMap());
+                    updateListView();
+                }
+            } else if (requestCode == RequestCode.CHANGEPASSWD) { //ChangePasswdActivity
+                if (resultCode == StatusCode.DATAUPDATED) {//数据有更新
+                    Bundle bundle = data.getBundleExtra("bundle");
+                    passwd = (String) bundle.get("newkey");
+                }
             }
-        }else if(requestCode == RequestCode.CHANGEPASSWD){ //ChangePasswdActivity
-            if (resultCode == StatusCode.DATAUPDATED) {//数据有更新
-                Bundle bundle = data.getBundleExtra("bundle");
-                passwd =(String) bundle.get("newkey");
-            }
+        }else{
+            finish();
         }
     }
 
@@ -180,6 +183,7 @@ public class ListViewActivity extends Activity implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.button_Add_Record:{
                 Intent intent = new Intent(ListViewActivity.this,ListContentViewActivity.class);
+                intent.setPackage(getPackageName());
                 SerializableHashMap myMap = new SerializableHashMap();
                 myMap.setMap(codeBook.book);
                 Bundle bundle=new Bundle();
@@ -190,6 +194,7 @@ public class ListViewActivity extends Activity implements View.OnClickListener {
             }
             case R.id.button_Change_Key:{
                 Intent intent = new Intent(ListViewActivity.this,ChangePasswdActivity.class);
+                intent.setPackage(getPackageName());
                 Bundle bundle=new Bundle();
                 bundle.putString("key",passwd);
                 intent.putExtra("bundle",bundle);
@@ -199,6 +204,7 @@ public class ListViewActivity extends Activity implements View.OnClickListener {
             case R.id.button_Save_Record:{
                 if(!codeBook.book.isEmpty()) {
                     Intent intent = new Intent(ListViewActivity.this, WriteToTagActivity.class);
+                    intent.setPackage(getPackageName());
                     SerializableHashMap myMap = new SerializableHashMap();
                     myMap.setMap(codeBook.book);
                     Bundle bundle = new Bundle();
@@ -213,6 +219,7 @@ public class ListViewActivity extends Activity implements View.OnClickListener {
             }
             case R.id.button_Delete_Account:{
                 Intent intent = new Intent(ListViewActivity.this,DeleteConfirmActivity.class);
+                intent.setPackage(getPackageName());
                 Bundle bundle=new Bundle();
                 bundle.putString("key",passwd);
                 intent.putExtra("bundle",bundle);
@@ -227,6 +234,7 @@ public class ListViewActivity extends Activity implements View.OnClickListener {
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(ListViewActivity.this,MainActivity.class);
+        intent.setPackage(getPackageName());
         startActivity(intent);
         super.onBackPressed();
     }

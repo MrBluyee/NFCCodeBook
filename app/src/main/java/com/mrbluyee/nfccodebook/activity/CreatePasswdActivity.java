@@ -21,6 +21,11 @@ public class CreatePasswdActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_passwd_view);
         initView();
+        Intent intent = getIntent();
+        String packagename = intent.getPackage().toString();
+        if(!packagename.equals(getPackageName())) {
+            finish();
+        }
     }
 
     private void initView(){
@@ -35,6 +40,7 @@ public class CreatePasswdActivity extends Activity {
                 if(!passwd1.equals("")){
                     if(passwd1.equals(passwd2)){
                         Intent intent = new Intent(CreatePasswdActivity.this,ListViewActivity.class);
+                        intent.setPackage(getPackageName());
                         Bundle bundle = new Bundle();
                         bundle.putString("newkey",passwd1);
                         intent.putExtra("bundle",bundle);

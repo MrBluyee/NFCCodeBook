@@ -32,11 +32,18 @@ public class DecodeActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.decode_view);
-        Intent intent = getIntent();
-        Bundle bundle = getIntent().getBundleExtra("bundle");
-        tagID = bundle.getByteArray("tagID");
-        tagContent = bundle.getByteArray("tagContent");
         initView();
+        Intent intent = getIntent();
+        String packagename = intent.getPackage().toString();
+        if(packagename.equals(getPackageName())) {
+            Bundle bundle = intent.getBundleExtra("bundle");
+            if (bundle != null) {
+                tagID = bundle.getByteArray("tagID");
+                tagContent = bundle.getByteArray("tagContent");
+            }
+        }else{
+            finish();
+        }
         myHandler = new MyHandler();
     }
 
@@ -72,6 +79,7 @@ public class DecodeActivity extends Activity {
                     CodeBook codeBook = new CodeBook(contentstr);
                     if(codeBook.book != null) {
                         Intent intent = new Intent(DecodeActivity.this, ListViewActivity.class);
+                        intent.setPackage(getPackageName());
                         Bundle bundle = new Bundle();
                         SerializableHashMap myMap = new SerializableHashMap();
                         myMap.setMap(codeBook.book);
