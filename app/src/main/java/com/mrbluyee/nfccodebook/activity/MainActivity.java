@@ -1,6 +1,7 @@
 package com.mrbluyee.nfccodebook.activity;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.nfc.NfcAdapter;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import com.mrbluyee.nfccodebook.R;
 import com.mrbluyee.nfccodebook.application.ReadFromTagHandle;
 import com.mrbluyee.nfccodebook.bean.StatusCode;
+import com.mrbluyee.nfccodebook.utils.CleanCacheUtils;
 
 public class MainActivity extends Activity {
     protected static final String activityTAG = MainActivity.class.getName();
@@ -105,6 +107,19 @@ public class MainActivity extends Activity {
         if (mNfcAdapter != null){
             mNfcAdapter.disableForegroundDispatch(this);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        CleanCacheUtils.clearAllCache(getApplicationContext());
+        ActivityManager manager = (ActivityManager)getSystemService(this.ACTIVITY_SERVICE);
+        manager.clearApplicationUserData();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }
 

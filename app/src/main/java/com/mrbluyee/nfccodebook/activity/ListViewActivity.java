@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -50,8 +52,16 @@ public class ListViewActivity extends Activity implements View.OnClickListener {
     private TextView list_Record_Count;
     private String passwd;
     private int record_count = 0;
+    private static boolean isExit = false;
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            isExit = false;
+        }
+    };
 
-    @Override
+        @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_view);
@@ -232,10 +242,24 @@ public class ListViewActivity extends Activity implements View.OnClickListener {
     }
 
     @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(ListViewActivity.this,MainActivity.class);
-        intent.setPackage(getPackageName());
-        startActivity(intent);
-        super.onBackPressed();
+    public boolean onKeyDown(int keyCode,KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            exit();
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    private void exit(){
+        if(!isExit){
+            isExit=true;
+            Toast.makeText(getApplicationContext(),"Press again to exit",Toast.LENGTH_SHORT).show();
+            handler.sendEmptyMessageDelayed(0,2000);
+        }
+        else{
+            Intent intent = new Intent(ListViewActivity.this,MainActivity.class);
+            intent.setPackage(getPackageName());
+            startActivity(intent);
+        }
     }
 }
