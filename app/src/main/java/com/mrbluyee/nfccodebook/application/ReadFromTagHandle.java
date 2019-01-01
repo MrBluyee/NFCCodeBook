@@ -20,6 +20,8 @@ import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import static com.mrbluyee.nfccodebook.utils.StringUtils.bytesToHexString;
+
 public class ReadFromTagHandle {
     private final Handler mReadHandler;
 
@@ -102,7 +104,17 @@ public class ReadFromTagHandle {
         @Override
         public void run() {
             if(data != null && keyString != null){
-                byte[] temp = AESUtils.decrypt(data, keyString);
+                String id_string = bytesToHexString(tagID);
+                String key_temp = keyString + id_string ;
+                char[] key_char = new char[key_temp.length()+id_string.length()];
+                for(int i=0;i<id_string.length();i++) {
+                    key_char[i*2] = key_temp.charAt(i);
+                    key_char[i*2+1] = id_string.charAt(i);
+                }
+                for(int i=0;i<key_temp.length()-id_string.length();i++){
+                    key_char[id_string.length()*2+i] = key_temp.charAt(id_string.length()+i);
+                }
+                byte[] temp = AESUtils.decrypt(data, new String(key_char));
                 if(temp != null){
                     byte[] head = ArrayUtils.SubArray(temp, 0, tagID.length);
                     if (mReadHandler != null) {

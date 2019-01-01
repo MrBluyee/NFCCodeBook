@@ -17,6 +17,8 @@ import com.mrbluyee.nfccodebook.utils.StringUtils;
 
 import java.util.Arrays;
 
+import static com.mrbluyee.nfccodebook.utils.StringUtils.bytesToHexString;
+
 public class WritetoTagHandle {
     private final Handler mReadHandler;
     private Tag mTag;
@@ -44,11 +46,21 @@ public class WritetoTagHandle {
             if(mTag != null) {
                 String[] techList = mTag.getTechList();
                 byte[] tagID = mTag.getId();
+                byte[] gzip_data = GzipUtils.compress(data);
+                byte[] encry_data = ArrayUtils.MergerArray(tagID,gzip_data);
+                String id_string = bytesToHexString(tagID);
+                String key_temp = key + id_string ;
+                char[] key_char = new char[key_temp.length()+id_string.length()];
+                for(int i=0;i<id_string.length();i++) {
+                    key_char[i*2] = key_temp.charAt(i);
+                    key_char[i*2+1] = id_string.charAt(i);
+                }
+                for(int i=0;i<key_temp.length()-id_string.length();i++){
+                    key_char[id_string.length()*2+i] = key_temp.charAt(id_string.length()+i);
+                }
+                byte[] encryed_data = AESUtils.encrypt(encry_data,new String(key_char));
                 if (Arrays.asList(techList).contains("android.nfc.tech.IsoDep")) {
                     TNCOSTag tncosTag = new TNCOSTag(mTag);
-                    byte[] gzip_data = GzipUtils.compress(data);
-                    byte[] encry_data = ArrayUtils.MergerArray(tagID,gzip_data);
-                    byte[] encryed_data = AESUtils.encrypt(encry_data,key);
                     byte[] write_data = ArrayUtils.MergerArray(tagID,encryed_data);
                     int tagCapabilityLength = tncosTag.getTagCapabilityLength();
                     if(tagCapabilityLength > write_data.length) {
@@ -75,9 +87,6 @@ public class WritetoTagHandle {
                     }
                 }else if(Arrays.asList(techList).contains("android.nfc.tech.MifareUltralight")){
                     MifareUltralightClass mifareUltralightClass = new MifareUltralightClass(mTag);
-                    byte[] gzip_data = GzipUtils.compress(data);
-                    byte[] encry_data = ArrayUtils.MergerArray(tagID,gzip_data);
-                    byte[] encryed_data = AESUtils.encrypt(encry_data,key);
                     int tagCapabilityLength = mifareUltralightClass.getTagCapabilityLength();
                     if(tagCapabilityLength > encryed_data.length + 9){
                         if (mifareUltralightClass.writeFile(encryed_data)) { //写入成功
@@ -93,9 +102,6 @@ public class WritetoTagHandle {
                     }
                 }else if(Arrays.asList(techList).contains("android.nfc.tech.MifareClassic")){
                     MifareClassicClass mifareClassicClass = new MifareClassicClass(mTag);
-                    byte[] gzip_data = GzipUtils.compress(data);
-                    byte[] encry_data = ArrayUtils.MergerArray(tagID,gzip_data);
-                    byte[] encryed_data = AESUtils.encrypt(encry_data,key);
                     int tagCapabilityLength = mifareClassicClass.getTagCapabilityLength();
                     if(tagCapabilityLength > encryed_data.length + 6){
                         if (mifareClassicClass.writeFile(encryed_data)) { //写入成功
